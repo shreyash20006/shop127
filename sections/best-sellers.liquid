@@ -1,0 +1,93 @@
+{% comment %}
+   Escape Clothing - Best Sellers Section
+{% endcomment %}
+
+<section class="best-sellers-section reveal" id="BestSellers-{{ section.id }}">
+  <div class="container">
+    
+    <div class="section-header">
+      <h2 class="section-title has-line">{{ section.settings.title | default: "BEST SELLERS" }}</h2>
+      {%- if section.settings.collection != blank -%}
+        <a href="{{ collections[section.settings.collection].url }}" class="view-all-link">VIEW ALL</a>
+      {%- endif -%}
+    </div>
+
+    <div class="best-sellers-grid grid">
+      {%- assign selected_collection = collections[section.settings.collection | default: 'best-sellers'] -%}
+      {%- if selected_collection != blank and selected_collection.products_count > 0 -%}
+        {%- for product in selected_collection.products limit: section.settings.products_limit -%}
+          {% render 'product-card', product: product, show_hot_badge: true %}
+        {%- endfor -%}
+      {%- else -%}
+        {% comment %} Fallback placeholder for Shopify Editor preview {% endcomment %}
+        {%- for i in (1..section.settings.products_limit) -%}
+          <div class="product-card-placeholder" style="border: 1px solid var(--border-color); padding: 12px; background-color: var(--surface-primary);">
+            <div style="aspect-ratio: 3/4; background-color: var(--surface-secondary); margin-bottom: 12px;" class="skeleton"></div>
+            <p style="font-size: 1.1rem; color: var(--highlight-color); font-weight: 700; margin-bottom: 4px;">🔥 BESTSELLER</p>
+            <h4 style="font-size: 1.4rem; font-family: var(--font-body); margin-bottom: 8px;">SAMPLE STREETWEAR</h4>
+            <p style="font-weight: 600;">₹1,199</p>
+          </div>
+        {%- endfor -%}
+      {%- endif -%}
+    </div>
+
+  </div>
+</section>
+
+<style>
+  .best-sellers-section {
+    padding: 80px 0;
+    background-color: var(--bg-color);
+  }
+  .best-sellers-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  
+  @media screen and (min-width: 768px) {
+    .best-sellers-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  
+  @media screen and (min-width: 990px) {
+    .best-sellers-grid {
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Best Sellers",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading Text",
+      "default": "BEST SELLERS"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Select Collection (defaults to 'best-sellers')"
+    },
+    {
+      "type": "range",
+      "id": "products_limit",
+      "min": 2,
+      "max": 12,
+      "step": 2,
+      "label": "Number of Products to Show",
+      "default": 4
+    }
+  ],
+  "presets": [
+    {
+      "name": "Best Sellers",
+      "category": "Products"
+    }
+  ]
+}
+{% endschema %}

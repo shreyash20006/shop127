@@ -1,0 +1,97 @@
+{% comment %}
+   Escape Clothing - Size Guide Page Section
+{% endcomment %}
+
+<section class="size-guide-section reveal" id="SizeGuide-{{ section.id }}">
+  <div class="container" style="max-width: 800px; padding: 120px 24px 80px 24px;">
+    
+    <div class="section-header text-center" style="display: block; margin-bottom: 40px;">
+      <h1 class="section-title" style="font-size: 5.6rem; letter-spacing: 2px;">SIZE GUIDE</h1>
+      <p style="color: var(--text-muted); font-size: 1.5rem; margin-top: 12px; text-transform: uppercase; letter-spacing: 1px;">Find your perfect fit for oversized catalog</p>
+    </div>
+
+    <div class="size-guide-content-wrap" style="background-color: var(--surface-primary); border: 1px solid var(--border-color); padding: 40px; border-radius: var(--border-radius);">
+      
+      <h3 style="font-size: 2rem; font-weight: 700; margin-bottom: 20px; color: var(--text-primary); text-transform: uppercase;">Oversized Fit Measurement Table (Inches)</h3>
+      
+      <div style="overflow-x: auto; margin-bottom: 32px;">
+        <table class="size-guide-table" style="width: 100%; border-collapse: collapse; text-align: left; font-size: 1.4rem;">
+          <thead>
+            <tr style="border-bottom: 2px solid var(--border-color); color: var(--text-primary); font-weight: 700;">
+              <th style="padding: 12px 8px;">SIZE</th>
+              <th style="padding: 12px 8px;">CHEST (IN)</th>
+              <th style="padding: 12px 8px;">LENGTH (IN)</th>
+              <th style="padding: 12px 8px;">SHOULDER (IN)</th>
+            </tr>
+          </thead>
+          <tbody style="color: var(--text-secondary);">
+            <tr style="border-bottom: 1px solid var(--border-color);">
+              <td style="padding: 12px 8px; font-weight: 700; color: #FFFFFF;">XS</td>
+              <td style="padding: 12px 8px;">42</td>
+              <td style="padding: 12px 8px;">27</td>
+              <td style="padding: 12px 8px;">19.5</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--border-color);">
+              <td style="padding: 12px 8px; font-weight: 700; color: #FFFFFF;">S</td>
+              <td style="padding: 12px 8px;">44</td>
+              <td style="padding: 12px 8px;">28</td>
+              <td style="padding: 12px 8px;">20</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--border-color);">
+              <td style="padding: 12px 8px; font-weight: 700; color: #FFFFFF;">M</td>
+              <td style="padding: 12px 8px;">46</td>
+              <td style="padding: 12px 8px;">29</td>
+              <td style="padding: 12px 8px;">20.5</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--border-color);">
+              <td style="padding: 12px 8px; font-weight: 700; color: #FFFFFF;">L</td>
+              <td style="padding: 12px 8px;">48</td>
+              <td style="padding: 12px 8px;">30</td>
+              <td style="padding: 12px 8px;">21</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--border-color);">
+              <td style="padding: 12px 8px; font-weight: 700; color: #FFFFFF;">XL</td>
+              <td style="padding: 12px 8px;">50</td>
+              <td style="padding: 12px 8px;">31</td>
+              <td style="padding: 12px 8px;">21.5</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--border-color);">
+              <td style="padding: 12px 8px; font-weight: 700; color: #FFFFFF;">XXL</td>
+              <td style="padding: 12px 8px;">52</td>
+              <td style="padding: 12px 8px;">32</td>
+              <td style="padding: 12px 8px;">22</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="fit-description" style="border-top: 1px solid var(--border-color); padding-top: 24px;">
+        <h4 style="font-size: 1.6rem; font-weight: 700; margin-bottom: 12px; color: var(--text-primary);">HOW TO MEASURE:</h4>
+        <ul style="list-style: none; font-size: 1.4rem; color: var(--text-secondary); display: flex; flex-direction: column; gap: 8px;">
+          <li><strong>Chest:</strong> Measure around the fullest part of your chest, keeping the tape horizontal.</li>
+          <li><strong>Length:</strong> Measure from the highest point of the shoulder down to the hem.</li>
+          <li><strong>Shoulder:</strong> Measure from one shoulder point straight across to the other shoulder point.</li>
+        </ul>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<style>
+  .size-guide-section {
+    background-color: var(--bg-color);
+  }
+  .size-guide-table th {
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Size Guide Page",
+  "settings": []
+}
+{% endschema %}

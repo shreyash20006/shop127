@@ -1,0 +1,9 @@
+# OS files
+.DS_Store
+Thumbs.db
+
+# Shopify CLI files
+.shopify/
+.theme-check.json
+theme-check-report.json
+*.log

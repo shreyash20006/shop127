@@ -1,0 +1,13 @@
+{% comment %}
+   Escape Clothing - Breadcrumbs Navigation
+{% endcomment %}
+
+<nav class="breadcrumbs" aria-label="Breadcrumb">
+  <a href="/">Home</a>
+  <span class="breadcrumbs__separator">&rsaquo;</span>
+  {%- if collection -%}
+    <a href="{{ collection.url }}">{{ collection.title }}</a>
+    <span class="breadcrumbs__separator">&rsaquo;</span>
+  {%- endif -%}
+  <span class="breadcrumbs__current">{{ product.title }}</span>
+</nav>

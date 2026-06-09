@@ -1,0 +1,65 @@
+{% comment %}
+   Escape Clothing - Search Results Page Section
+{% endcomment %}
+
+<section class="search-page-section reveal" id="SearchPage-{{ section.id }}">
+  <div class="container" style="padding: 120px 24px 80px 24px;">
+    
+    <div class="section-header text-center" style="display: block; margin-bottom: 48px;">
+      <h1 class="section-title" style="font-size: 5.6rem; letter-spacing: 2px;">SEARCH RESULTS</h1>
+      
+      <form action="/search" method="get" role="search" class="search-form flex justify-center" style="max-width: 500px; margin: 24px auto 0 auto; gap: 8px;">
+        <input type="search" name="q" value="{{ search.terms | escape }}" placeholder="SEARCH OUR DROPS..." class="form-input" required>
+        <button type="submit" class="btn btn-primary btn-hover-slide" style="padding: 12px 24px;">SEARCH</button>
+      </form>
+    </div>
+
+    {%- if search.performed -%}
+      {%- if search.results_count == 0 -%}
+        <div class="text-center" style="padding: 40px 0;">
+          <p style="color: var(--text-muted); font-size: 1.6rem;">No results found for "{{ search.terms | escape }}". Try searching for different items.</p>
+        </div>
+      {%- else -%}
+        
+        <div class="search-results-grid grid">
+          {%- for item in search.results -%}
+            {% comment %} Render only products in search results {% endcomment %}
+            {%- if item.object_type == 'product' -%}
+              {% render 'product-card', product: item %}
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+
+      {%- endif -%}
+    {%- endif -%}
+
+  </div>
+</section>
+
+<style>
+  .search-page-section {
+    background-color: var(--bg-color);
+  }
+  .search-results-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  @media screen and (min-width: 768px) {
+    .search-results-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  @media screen and (min-width: 1200px) {
+    .search-results-grid {
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Search Results",
+  "settings": []
+}
+{% endschema %}

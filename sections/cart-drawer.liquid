@@ -1,0 +1,231 @@
+{% comment %}
+   Escape Clothing - Slide-out AJAX Cart Drawer
+{% endcomment %}
+
+<div class="cart-drawer-overlay" id="CartDrawer">
+  <div class="cart-drawer-inner flex flex-column">
+    
+    {% comment %} Drawer Header {% endcomment %}
+    <div class="cart-drawer-header flex justify-between align-center">
+      <h3 class="cart-drawer-title-text" id="CartDrawerTitle">MY CART ({{ cart.item_count }})</h3>
+      <button class="cart-drawer-close-btn" id="CartDrawerClose" aria-label="Close Cart Drawer">&times;</button>
+    </div>
+
+    {% comment %} Free Shipping Progress Indicator {% endcomment %}
+    <div class="free-shipping-progress-wrap">
+      <p class="free-shipping-msg" id="FreeShippingProgressText">
+        {%- assign threshold = 99900 -%}
+        {%- if cart.item_count == 0 -%}
+          Add <strong>₹999</strong> more for FREE shipping!
+        {%- elsif cart.total_price >= threshold -%}
+          🎉 You've unlocked <strong>FREE shipping!</strong>
+        {%- else -%}
+          {%- assign remaining = threshold | minus: cart.total_price -%}
+          Add <strong>₹{{ remaining | divided_by: 100 }}</strong> more for FREE shipping!
+        {%- endif -%}
+      </p>
+      <div class="progress-bar-bg">
+        {%- assign percent = cart.total_price | times: 100 | divided_by: threshold -%}
+        {%- if percent > 100 -%}{%- assign percent = 100 -%}{%- endif -%}
+        <div class="progress-bar-fill" 
+             id="FreeShippingProgressBar" 
+             style="width: {{ percent }}%; {% if percent >= 100 %}background-color: #2ECC71;{% endif %}"></div>
+      </div>
+    </div>
+
+    {% comment %} Items List container {% endcomment %}
+    <div class="cart-drawer-items-container" id="CartDrawerItems">
+      {%- if cart.item_count == 0 -%}
+        <div class="cart-drawer__empty text-center" style="padding: 60px 20px;">
+          <p style="margin-bottom: 24px; color: var(--text-muted);">Your cart is currently empty.</p>
+          <a href="/collections/all" class="btn btn-primary">SHOP NEW ARRIVALS</a>
+        </div>
+      {%- else -%}
+        {%- for item in cart.items -%}
+          <div class="cart-drawer-item flex" data-key="{{ item.key }}">
+            <div class="cart-drawer-item__image" style="width: 70px; margin-right: 16px;">
+              <img src="{{ item.image | image_url: width: 140 }}" alt="{{ item.title }}" style="width: 100%; object-fit: cover; aspect-ratio: 3/4;">
+            </div>
+            
+            <div class="cart-drawer-item__details" style="flex: 1;">
+              <div class="flex justify-between" style="margin-bottom: 4px;">
+                <h4 style="font-size: 1.4rem; font-family: var(--font-body); font-weight: 600; text-transform: uppercase;">
+                  <a href="{{ item.url }}">{{ item.product.title }}</a>
+                </h4>
+                <button class="cart-drawer-item__remove" onclick="changeQuantity('{{ item.key }}', 0)">&times;</button>
+              </div>
+              
+              {%- if item.variant.title != 'Default Title' -%}
+                <p style="font-size: 1.2rem; color: var(--text-muted); margin-bottom: 8px;">Size/Variant: {{ item.variant.title }}</p>
+              {%- endif -%}
+              
+              <div class="flex justify-between align-center" style="margin-top: 12px;">
+                <div class="qty-selector flex align-center" style="border: 1px solid var(--border-color); padding: 4px 8px;">
+                  <button onclick="changeQuantity('{{ item.key }}', {{ item.quantity | minus: 1 }})" style="padding: 0 8px; font-size: 1.6rem;">&minus;</button>
+                  <span style="padding: 0 12px; font-size: 1.4rem;">{{ item.quantity }}</span>
+                  <button onclick="changeQuantity('{{ item.key }}', {{ item.quantity | plus: 1 }})" style="padding: 0 8px; font-size: 1.6rem;">+</button>
+                </div>
+                <p style="font-size: 1.4rem; font-weight: 600; color: var(--text-primary);">₹{{ item.final_line_price | divided_by: 100 }}</p>
+              </div>
+            </div>
+          </div>
+        {%- endfor -%}
+      {%- endif -%}
+    </div>
+
+    {% comment %} Footer summary {% endcomment %}
+    <div class="cart-drawer-footer" id="CartDrawerFooter" {% if cart.item_count == 0 %}style="display:none;"{% endif %}>
+      <hr class="section-divider" style="margin: 16px 0;">
+      
+      <div class="flex justify-between align-center" style="margin-bottom: 12px;">
+        <span style="font-size: 1.6rem; font-weight: 600; color: var(--text-secondary);">Subtotal</span>
+        <span id="CartDrawerSubtotal" style="font-size: 2.2rem; font-weight: 800; color: #FFFFFF;">₹{{ cart.total_price | divided_by: 100 }}</span>
+      </div>
+
+      {% comment %} Coupon section {% endcomment %}
+      <div class="drawer-coupon-wrap flex align-center" style="margin-bottom: 24px; gap: 8px;">
+        <input type="text" id="DrawerCouponInput" class="form-input" placeholder="ENTER DISCOUNT CODE" style="padding: 10px 14px; font-size: 1.3rem;">
+        <button type="button" class="btn btn-primary" onclick="applyMockCoupon()" style="padding: 10px 20px; font-size: 1.2rem;">APPLY</button>
+      </div>
+      <p id="CouponAlertMessage" style="font-size: 1.3rem; margin-bottom: 16px; display: none;"></p>
+
+      <div class="flex flex-column" style="gap: 12px;">
+        <a href="/cart" class="btn btn-secondary text-center">VIEW CART</a>
+        <a href="/checkout" class="btn btn-primary text-center btn-hover-slide">CHECKOUT &rarr;</a>
+      </div>
+
+      <div class="cart-drawer-trust-strip flex justify-center text-center" style="margin-top: 24px; gap: 16px; font-size: 1.2rem; color: var(--text-muted);">
+        <span>🔒 Secure</span>
+        <span>•</span>
+        <span>📦 COD Available</span>
+        <span>•</span>
+        <span>🔄 Easy Returns</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<style>
+  /* Drawer Backdrop Overlay styling */
+  .cart-drawer-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 10000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+  }
+  .cart-drawer-overlay.active {
+    opacity: 1;
+    pointer-events: all;
+  }
+  
+  /* Inner container sliding from right */
+  .cart-drawer-inner {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    max-width: 420px;
+    height: 100%;
+    background-color: #111111;
+    border-left: 1px solid var(--border-color);
+    padding: 32px 24px;
+    transform: translateX(100%);
+    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .cart-drawer-overlay.active .cart-drawer-inner {
+    transform: translateX(0);
+  }
+
+  .cart-drawer-header {
+    margin-bottom: 24px;
+  }
+  .cart-drawer-title-text {
+    font-family: var(--font-heading);
+    font-size: 2.4rem;
+    letter-spacing: 2px;
+  }
+  .cart-drawer-close-btn {
+    font-size: 3.2rem;
+    color: var(--text-muted);
+  }
+
+  /* Free Shipping Progress details */
+  .free-shipping-progress-wrap {
+    margin-bottom: 24px;
+  }
+  .free-shipping-msg {
+    font-size: 1.3rem;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+  }
+  .progress-bar-bg {
+    width: 100%;
+    height: 6px;
+    background-color: var(--surface-secondary);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background-color: var(--highlight-color);
+    transition: width 0.4s ease-out;
+  }
+
+  /* Items rows styles */
+  .cart-drawer-items-container {
+    flex-grow: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+  .cart-drawer-item {
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 16px;
+    transition: opacity 0.3s ease;
+  }
+  .cart-drawer-item__remove {
+    font-size: 2rem;
+    color: var(--text-muted);
+    line-height: 1;
+  }
+</style>
+
+<script>
+  function applyMockCoupon() {
+    const input = document.getElementById('DrawerCouponInput');
+    const msg = document.getElementById('CouponAlertMessage');
+    if (!input || !msg) return;
+
+    const code = input.value.trim().toUpperCase();
+    if (code === '') {
+      msg.style.display = 'none';
+      return;
+    }
+
+    if (code === 'ESCAPE10' || code === 'STREET10') {
+      msg.style.color = '#2ECC71';
+      msg.innerText = "Coupon code applied! 10% discount will show at checkout.";
+      msg.style.display = 'block';
+    } else {
+      msg.style.color = 'var(--highlight-color)';
+      msg.innerText = "Invalid coupon code. Try 'ESCAPE10'.";
+      msg.style.display = 'block';
+    }
+  }
+</script>
+
+{% schema %}
+{
+  "name": "Cart Drawer",
+  "settings": []
+}
+{% endschema %}

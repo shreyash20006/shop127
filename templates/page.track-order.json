@@ -1,0 +1,11 @@
+{
+  "sections": {
+    "track-order-page": {
+      "type": "track-order-page",
+      "settings": {}
+    }
+  },
+  "order": [
+    "track-order-page"
+  ]
+}

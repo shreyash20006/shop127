@@ -1,0 +1,141 @@
+{% comment %}
+   Escape Clothing - Announcement Bar Section
+{% endcomment %}
+
+<div class="announcement-bar" id="AnnouncementBar-{{ section.id }}" style="background-color: {{ section.settings.bg_color }}; color: {{ section.settings.text_color }};">
+  <div class="container">
+    <div class="announcement-bar__slider">
+      {%- for block in section.blocks -%}
+        <div class="announcement-bar__message {% if forloop.first %}active{% endif %}" {{ block.shopify_attributes }}>
+          <span>{{ block.settings.text }}</span>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+<style>
+  .announcement-bar {
+    padding: 8px 0;
+    text-align: center;
+    font-size: 1.1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    position: relative;
+    z-index: 1000;
+    overflow: hidden;
+    height: 32px;
+  }
+  .announcement-bar__slider {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+  .announcement-bar__message {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    opacity: 0;
+    transform: translateY(15px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+  .announcement-bar__message.active {
+    opacity: 1;
+    transform: translateY(0);
+    position: relative;
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const messages = document.querySelectorAll('#AnnouncementBar-{{ section.id }} .announcement-bar__message');
+    if (messages.length <= 1) return;
+
+    let currentIndex = 0;
+    const intervalTime = {{ section.settings.interval | default: 4 }} * 1000;
+
+    setInterval(() => {
+      messages[currentIndex].classList.remove('active');
+      currentIndex = (currentIndex + 1) % messages.length;
+      messages[currentIndex].classList.add('active');
+    }, intervalTime);
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Announcement Bar",
+  "settings": [
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#FF3B30"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "range",
+      "id": "interval",
+      "min": 2,
+      "max": 10,
+      "step": 1,
+      "unit": "s",
+      "label": "Message Rotation Delay",
+      "default": 4
+    }
+  ],
+  "blocks": [
+    {
+      "type": "announcement",
+      "name": "Message",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Announcement Text",
+          "default": "🚚 Free Shipping on orders above ₹999"
+        }
+      ]
+    }
+  ],
+  "default": {
+    "blocks": [
+      {
+        "type": "announcement",
+        "settings": {
+          "text": "🚚 Free Shipping on orders above ₹999"
+        }
+      },
+      {
+        "type": "announcement",
+        "settings": {
+          "text": "💳 Secure Payments via Cashfree (UPI/Cards)"
+        }
+      },
+      {
+        "type": "announcement",
+        "settings": {
+          "text": "📦 Cash on Delivery (COD) Available"
+        }
+      },
+      {
+        "type": "announcement",
+        "settings": {
+          "text": "🔄 Easy 7-Day Returns & Exchanges"
+        }
+      }
+    ]
+  }
+}
+{% endschema %}

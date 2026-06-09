@@ -1,0 +1,68 @@
+{% comment %}
+   Escape Clothing - Product Recommendations Section
+   Uses Shopify Recommendations API to dynamically fetch similar products on load
+{% endcomment %}
+
+<section class="product-recommendations reveal" 
+         id="ProductRecommendations-{{ section.id }}" 
+         data-url="{{ routes.product_recommendations_url }}?section_id={{ section_id }}&product_id={{ product.id }}&limit=4">
+  
+  {%- if recommendations.performed and recommendations.products_count > 0 -%}
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title has-line">{{ section.settings.title | default: "YOU MAY ALSO LIKE" }}</h2>
+      </div>
+      <div class="products-grid-container grid">
+        {%- for product in recommendations.products -%}
+          {% render 'product-card', product: product %}
+        {%- endfor -%}
+      </div>
+    </div>
+  {%- endif -%}
+
+</section>
+
+<style>
+  .product-recommendations {
+    padding: 60px 0 100px 0;
+    background-color: var(--bg-color);
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const recommendationsSection = document.getElementById('ProductRecommendations-{{ section.id }}');
+    if (!recommendationsSection) return;
+
+    // Fetch the recommendations markup
+    const url = recommendationsSection.getAttribute('data-url');
+    fetch(url)
+      .then(response => response.text())
+      .then(html => {
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+        const recommendationsMarkup = doc.querySelector('.product-recommendations');
+        
+        if (recommendationsMarkup && recommendationsMarkup.innerHTML.trim().length > 0) {
+          recommendationsSection.innerHTML = recommendationsMarkup.innerHTML;
+          // Trigger animations on loaded elements
+          recommendationsSection.classList.add('revealed');
+        }
+      })
+      .catch(e => console.error('Recommendations error:', e));
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Product Recommendations",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading Text",
+      "default": "YOU MAY ALSO LIKE"
+    }
+  ]
+}
+{% endschema %}

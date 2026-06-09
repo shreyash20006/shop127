@@ -1,0 +1,38 @@
+{
+  "current": {
+    "sections": {
+      "announcement-bar": {
+        "type": "announcement-bar",
+        "settings": {}
+      },
+      "header": {
+        "type": "header",
+        "settings": {}
+      },
+      "footer": {
+        "type": "footer",
+        "settings": {}
+      }
+    },
+    "settings": {
+      "color_bg": "#0A0A0A",
+      "color_surface": "#111111",
+      "color_surface_secondary": "#1A1A1A",
+      "color_text": "#FFFFFF",
+      "color_text_secondary": "#E5E5E5",
+      "color_accent": "#FFFFFF",
+      "color_highlight": "#FF3B30",
+      "color_border": "#222222",
+      "heading_font": "bebas_neue",
+      "body_font": "inter",
+      "btn_border_radius": 2,
+      "enable_animations": true,
+      "social_instagram_link": "https://instagram.com/escape_clothing17",
+      "social_whatsapp_phone": "+91 8261094774",
+      "social_whatsapp_message": "Hi! I want to order from Escape Clothing 👣",
+      "social_facebook_link": "https://facebook.com/escapeclothing",
+      "social_twitter_link": "https://twitter.com/escapeclothing",
+      "logo_width": 140
+    }
+  }
+}

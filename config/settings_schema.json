@@ -1,0 +1,181 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Escape Clothing Theme",
+    "theme_version": "1.0.0",
+    "theme_author": "Antigravity AI",
+    "theme_documentation_url": "https://github.com/escape-clothing-theme",
+    "theme_support_url": "https://escapeclothing.in"
+  },
+  {
+    "name": "Colors",
+    "settings": [
+      {
+        "type": "color",
+        "id": "color_bg",
+        "label": "Background Color",
+        "default": "#0A0A0A"
+      },
+      {
+        "type": "color",
+        "id": "color_surface",
+        "label": "Surface Primary",
+        "default": "#111111"
+      },
+      {
+        "type": "color",
+        "id": "color_surface_secondary",
+        "label": "Surface Secondary",
+        "default": "#1A1A1A"
+      },
+      {
+        "type": "color",
+        "id": "color_text",
+        "label": "Text Main",
+        "default": "#FFFFFF"
+      },
+      {
+        "type": "color",
+        "id": "color_text_secondary",
+        "label": "Text Secondary",
+        "default": "#E5E5E5"
+      },
+      {
+        "type": "color",
+        "id": "color_accent",
+        "label": "Accent Color",
+        "default": "#FFFFFF"
+      },
+      {
+        "type": "color",
+        "id": "color_highlight",
+        "label": "Highlight Red (Badges, urgency tags)",
+        "default": "#FF3B30"
+      },
+      {
+        "type": "color",
+        "id": "color_border",
+        "label": "Border Line Color",
+        "default": "#222222"
+      }
+    ]
+  },
+  {
+    "name": "Typography & Buttons",
+    "settings": [
+      {
+        "type": "select",
+        "id": "heading_font",
+        "label": "Heading Font Style",
+        "options": [
+          {
+            "value": "bebas_neue",
+            "label": "Bebas Neue (Streetwear Bold)"
+          },
+          {
+            "value": "anton",
+            "label": "Anton (Impact Solid)"
+          }
+        ],
+        "default": "bebas_neue"
+      },
+      {
+        "type": "select",
+        "id": "body_font",
+        "label": "Body Font Style",
+        "options": [
+          {
+            "value": "inter",
+            "label": "Inter (Clean Modern)"
+          },
+          {
+            "value": "dm_sans",
+            "label": "DM Sans (Geometric)"
+          }
+        ],
+        "default": "inter"
+      },
+      {
+        "type": "range",
+        "id": "btn_border_radius",
+        "min": 0,
+        "max": 10,
+        "step": 1,
+        "unit": "px",
+        "label": "Button Corner Radius",
+        "default": 2
+      }
+    ]
+  },
+  {
+    "name": "Animations",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "enable_animations",
+        "label": "Enable scroll reveals & page transitions",
+        "default": true
+      }
+    ]
+  },
+  {
+    "name": "Social Links & Contact",
+    "settings": [
+      {
+        "type": "text",
+        "id": "social_instagram_link",
+        "label": "Instagram Profile Link",
+        "default": "https://instagram.com/escape_clothing17"
+      },
+      {
+        "type": "text",
+        "id": "social_whatsapp_phone",
+        "label": "WhatsApp Phone Number (with Country Code)",
+        "default": "+91 8261094774"
+      },
+      {
+        "type": "text",
+        "id": "social_whatsapp_message",
+        "label": "WhatsApp Pre-filled Message",
+        "default": "Hi! I want to order from Escape Clothing 👣"
+      },
+      {
+        "type": "text",
+        "id": "social_facebook_link",
+        "label": "Facebook Page Link",
+        "default": "https://facebook.com/escapeclothing"
+      },
+      {
+        "type": "text",
+        "id": "social_twitter_link",
+        "label": "Twitter Handle Link",
+        "default": "https://twitter.com/escapeclothing"
+      }
+    ]
+  },
+  {
+    "name": "Global Brand Assets",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "logo",
+        "label": "Main Brand Logo"
+      },
+      {
+        "type": "range",
+        "id": "logo_width",
+        "min": 50,
+        "max": 300,
+        "step": 10,
+        "unit": "px",
+        "label": "Logo Max Width (Desktop)",
+        "default": 140
+      },
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon Icon"
+      }
+    ]
+  }
+]

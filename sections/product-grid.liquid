@@ -1,0 +1,93 @@
+{% comment %}
+   Escape Clothing - Modular Product Grid Section (Reusable)
+{% endcomment %}
+
+<section class="product-grid-section reveal" id="ProductGrid-{{ section.id }}">
+  <div class="container">
+    
+    <div class="section-header">
+      <h2 class="section-title has-line">{{ section.settings.title | default: "NEW ARRIVALS" }}</h2>
+      {%- if section.settings.collection != blank -%}
+        <a href="{{ collections[section.settings.collection].url }}" class="view-all-link">VIEW ALL</a>
+      {%- endif -%}
+    </div>
+
+    <div class="products-grid-container grid">
+      {%- assign selected_collection = collections[section.settings.collection] -%}
+      {%- if selected_collection != blank and selected_collection.products_count > 0 -%}
+        {%- for product in selected_collection.products limit: section.settings.products_limit -%}
+          {% render 'product-card', product: product %}
+        {%- endfor -%}
+      {%- else -%}
+        {% comment %} Placeholder products for preview in Shopify Editor {% endcomment %}
+        {%- for i in (1..section.settings.products_limit) -%}
+          <div class="product-card-placeholder" style="border: 1px solid var(--border-color); padding: 12px; background-color: var(--surface-primary);">
+            <div style="aspect-ratio: 3/4; background-color: var(--surface-secondary); margin-bottom: 12px;" class="skeleton"></div>
+            <p style="font-size: 1.1rem; color: var(--highlight-color); font-weight: 700; margin-bottom: 4px;">STREETWEAR</p>
+            <h4 style="font-size: 1.4rem; font-family: var(--font-body); margin-bottom: 8px;">SAMPLE APPAREL CARD</h4>
+            <p style="font-weight: 600;">₹999</p>
+          </div>
+        {%- endfor -%}
+      {%- endif -%}
+    </div>
+
+  </div>
+</section>
+
+<style>
+  .product-grid-section {
+    padding: 80px 0;
+    background-color: var(--bg-color);
+  }
+  .products-grid-container {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  
+  @media screen and (min-width: 768px) {
+    .products-grid-container {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  
+  @media screen and (min-width: 990px) {
+    .products-grid-container {
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Product Grid",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading Text",
+      "default": "NEW ARRIVALS"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Select Collection"
+    },
+    {
+      "type": "range",
+      "id": "products_limit",
+      "min": 2,
+      "max": 12,
+      "step": 2,
+      "label": "Number of Products to Show",
+      "default": 4
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Grid",
+      "category": "Products"
+    }
+  ]
+}
+{% endschema %}

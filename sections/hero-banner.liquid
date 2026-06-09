@@ -1,0 +1,206 @@
+{% comment %}
+   Escape Clothing - Hero Banner Section
+{% endcomment %}
+
+<section class="hero-banner" id="HeroBanner-{{ section.id }}" style="height: {{ section.settings.height_desktop }}vh;">
+  
+  {% comment %} Hero Background {% endcomment %}
+  <div class="hero-banner__bg parallax-element" style="{% if section.settings.image != blank %}background-image: url('{{ section.settings.image | image_url: width: 2000 }}');{% else %}background-image: url('https://images.unsplash.com/photo-1509281373149-e957c6296406?q=80&w=2000&auto=format&fit=crop');{% endif %}">
+    {%- if section.settings.video_url != blank -%}
+      <video autoplay muted loop playsinline class="hero-banner__video">
+        <source src="{{ section.settings.video_url }}" type="video/mp4">
+      </video>
+    {%- endif -%}
+  </div>
+
+  {% comment %} Dark Overlay {% endcomment %}
+  <div class="hero-banner__overlay" style="background-color: rgba(0, 0, 0, {{ section.settings.overlay_opacity | divided_by: 100.0 }});"></div>
+
+  {% comment %} Hero Content Centered {% endcomment %}
+  <div class="hero-banner__content container flex align-center justify-center text-center">
+    <div class="hero-banner__text-wrap reveal-stagger active">
+      
+      <p class="hero-tagline uppercase delay-100" style="color: var(--highlight-color); letter-spacing: 6px; font-size: 1.4rem; font-weight: 700; margin-bottom: 16px;">
+        {{ section.settings.tagline | default: "NEW COLLECTION" }}
+      </p>
+
+      <h1 class="hero-heading uppercase delay-200" style="font-family: var(--font-heading); line-height: 0.95;">
+        {%- assign heading_words = section.settings.heading | default: "ESCAPE THE ORDINARY" | split: " " -%}
+        {%- for word in heading_words -%}
+          <span class="word-reveal-container">
+            <span class="word-reveal-span" style="transition-delay: {{ forloop.index | times: 60 }}ms;">{{ word }}&nbsp;</span>
+          </span>
+        {%- endfor -%}
+      </h1>
+
+      <p class="hero-subheading delay-300" style="font-size: 1.8rem; color: var(--text-secondary); margin-top: 24px; margin-bottom: 40px; font-weight: 300;">
+        {{ section.settings.subheading | default: "Premium Streetwear. Made for the Bold." }}
+      </p>
+
+      <div class="hero-buttons flex justify-center delay-400" style="gap: 16px;">
+        <a href="{{ section.settings.btn_1_link | default: '/collections/all' }}" class="btn btn-primary btn-hover-slide">{{ section.settings.btn_1_text | default: "SHOP NOW" }}</a>
+        <a href="{{ section.settings.btn_2_link | default: '/collections/new-arrivals' }}" class="btn btn-secondary btn-hover-slide">{{ section.settings.btn_2_text | default: "NEW ARRIVALS" }}</a>
+      </div>
+
+    </div>
+  </div>
+
+  {% comment %} Scroll Indicator Arrow {% endcomment %}
+  <div class="hero-scroll-indicator">
+    <svg class="scroll-arrow" viewBox="0 0 24 24" width="28" height="28" stroke="currentColor" stroke-width="2" fill="none"><line x1="12" y1="5" x2="12" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline></svg>
+  </div>
+</section>
+
+<style>
+  .hero-banner {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    margin-top: calc(-1 * var(--header-height) - 32px); /* overlap header */
+  }
+  .hero-banner__bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    /* CSS performant parallax hook: uses the --scroll CSS variable updated in theme.js */
+    transform: translateY(calc(var(--scroll, 0) * 0.4px));
+    transition: transform 0.1s ease-out;
+  }
+  .hero-banner__video {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: translate(-50%, -50%);
+  }
+  .hero-banner__overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+  }
+  .hero-banner__content {
+    position: relative;
+    z-index: 2;
+    height: 100%;
+    padding-top: 100px; /* offset for header */
+  }
+  .hero-heading {
+    font-size: 5.6rem;
+    color: #FFFFFF;
+    word-break: break-word;
+  }
+  
+  .hero-scroll-indicator {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 3;
+    animation: bounce 2s infinite;
+  }
+  
+  @keyframes bounce {
+    0%, 20%, 50%, 80%, 100% { transform: translate(-50%, 0); }
+    40% { transform: translate(-50%, -10px); }
+    60% { transform: translate(-50%, -5px); }
+  }
+
+  @media screen and (min-width: 768px) {
+    .hero-heading {
+      font-size: 9.6rem;
+    }
+  }
+
+  /* Trigger the word reveal slide ups when section loads */
+  .hero-banner__text-wrap.active .word-reveal-span {
+    transform: translateY(0);
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Hero Banner",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Hero Background Image"
+    },
+    {
+      "type": "text",
+      "id": "video_url",
+      "label": "Hero Video MP4 Direct Link (Optional)",
+      "info": "Upload to Shopify Files and paste URL here"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "min": 0,
+      "max": 90,
+      "step": 5,
+      "unit": "%",
+      "label": "Overlay Darkness",
+      "default": 55
+    },
+    {
+      "type": "range",
+      "id": "height_desktop",
+      "min": 60,
+      "max": 100,
+      "step": 5,
+      "unit": "vh",
+      "label": "Section Height",
+      "default": 100
+    },
+    {
+      "type": "text",
+      "id": "tagline",
+      "label": "Tagline Text",
+      "default": "NEW COLLECTION"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Main Heading Text",
+      "default": "ESCAPE THE ORDINARY"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading Text",
+      "default": "Premium Streetwear. Made for the Bold."
+    },
+    {
+      "type": "text",
+      "id": "btn_1_text",
+      "label": "Primary Button Title",
+      "default": "SHOP NOW"
+    },
+    {
+      "type": "url",
+      "id": "btn_1_link",
+      "label": "Primary Button Destination"
+    },
+    {
+      "type": "text",
+      "id": "btn_2_text",
+      "label": "Secondary Button Title",
+      "default": "NEW ARRIVALS"
+    },
+    {
+      "type": "url",
+      "id": "btn_2_link",
+      "label": "Secondary Button Destination"
+    }
+  ]
+}
+{% endschema %}

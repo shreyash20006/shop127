@@ -1,0 +1,78 @@
+{
+  "sections": {
+    "hero-banner": {
+      "type": "hero-banner",
+      "settings": {
+        "tagline": "NEW DROP",
+        "heading": "ESCAPE THE ORDINARY",
+        "subheading": "Premium Streetwear. Made for the Bold."
+      }
+    },
+    "featured-categories": {
+      "type": "featured-categories",
+      "settings": {
+        "title": "SHOP BY CATEGORY"
+      }
+    },
+    "new-arrivals-grid": {
+      "type": "product-grid",
+      "settings": {
+        "title": "NEW ARRIVALS",
+        "collection": "new-arrivals",
+        "products_limit": 4
+      }
+    },
+    "best-sellers-grid": {
+      "type": "best-sellers",
+      "settings": {
+        "title": "BEST SELLERS",
+        "collection": "best-sellers",
+        "products_limit": 4
+      }
+    },
+    "combo-deal-999": {
+      "type": "combo-deal-999",
+      "settings": {
+        "title": "3 FOR ₹999",
+        "subtext": "Limited drops. Don't miss out.",
+        "stock_count": 14,
+        "end_date": "2026-12-31T23:59:59"
+      }
+    },
+    "why-choose-us": {
+      "type": "why-choose-us",
+      "settings": {}
+    },
+    "instagram-gallery": {
+      "type": "instagram-gallery",
+      "settings": {
+        "handle": "@escape_clothing17"
+      }
+    },
+    "customer-reviews": {
+      "type": "customer-reviews",
+      "settings": {
+        "title": "WHAT THEY'RE SAYING",
+        "overall_rating": "4.8/5 · 200+ Reviews"
+      }
+    },
+    "newsletter": {
+      "type": "newsletter",
+      "settings": {
+        "heading": "GET EARLY ACCESS TO DROPS",
+        "subtext": "Join 5,000+ streetwear fans. No spam."
+      }
+    }
+  },
+  "order": [
+    "hero-banner",
+    "featured-categories",
+    "new-arrivals-grid",
+    "best-sellers-grid",
+    "combo-deal-999",
+    "why-choose-us",
+    "instagram-gallery",
+    "customer-reviews",
+    "newsletter"
+  ]
+}

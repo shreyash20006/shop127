@@ -1,0 +1,325 @@
+{% comment %}
+   Escape Clothing - Main Site Header Section
+{% endcomment %}
+
+<header class="site-header fixed-header" role="banner">
+  <div class="container flex justify-between align-center header-inner">
+    
+    {% comment %} Left: Hamburger for mobile / logo {% endcomment %}
+    <div class="header-left flex align-center">
+      <button class="mobile-menu-toggle-btn" id="MobileMenuToggle" aria-label="Open Navigation Menu">
+        <span class="bar bar-1"></span>
+        <span class="bar bar-2"></span>
+        <span class="bar bar-3"></span>
+      </button>
+      
+      <a href="/" class="header-logo-link">
+        {%- if section.settings.logo_upload != blank -%}
+          <img src="{{ section.settings.logo_upload | image_url: width: 200 }}" 
+               alt="{{ shop.name }}" 
+               class="header-logo" 
+               style="max-width: {{ section.settings.logo_max_width }}px;">
+        {%- else -%}
+          <img src="https://res.cloudinary.com/dsqxboxoc/image/upload/q_auto/f_auto/v1780928834/639473422_17856452319665295_1281961209085143497_n_mmtgqs.jpg" 
+               alt="Escape Clothing Logo" 
+               class="header-logo" 
+               style="max-width: {{ section.settings.logo_max_width }}px;">
+        {%- endif -%}
+      </a>
+    </div>
+
+    {% comment %} Center: Navigation Menu (Desktop) {% endcomment %}
+    <nav class="desktop-navigation" role="navigation">
+      <ul class="nav-menu flex">
+        {%- for link in section.settings.main_menu.links -%}
+          <li class="nav-item">
+            <a href="{{ link.url }}" class="nav-link {% if link.active %}active{% endif %}">{{ link.title }}</a>
+          </li>
+        {%- endfor -%}
+      </ul>
+    </nav>
+
+    {% comment %} Right: Icons row {% endcomment %}
+    <div class="header-right flex align-center">
+      <a href="/search" class="header-icon-link search-icon-btn" aria-label="Search">
+        <svg class="icon icon-search" viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+      </a>
+      
+      <a href="/account" class="header-icon-link desktop-only" aria-label="Account">
+        <svg class="icon icon-user" viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+      </a>
+
+      <a href="#wishlist" class="header-icon-link wishlist-trigger desktop-only" aria-label="Wishlist">
+        <svg class="icon icon-heart" viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+      </a>
+
+      <a href="/cart" class="header-icon-link js-cart-trigger cart-icon-btn" aria-label="Cart">
+        <svg class="icon icon-shopping-bag" viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+        <span class="cart-count-badge" {% if cart.item_count == 0 %}style="display:none;"{% endif %}>{{ cart.item_count }}</span>
+      </a>
+    </div>
+
+  </div>
+</header>
+
+{% comment %} Mobile Menu Slide-in Overlay {% endcomment %}
+<div class="mobile-menu-overlay" id="MobileMenuOverlay">
+  <div class="mobile-menu-inner">
+    <div class="mobile-menu-header flex justify-between align-center">
+      <span class="mobile-menu-title">ESCAPE CLOTHING</span>
+      <button class="mobile-menu-close" id="MobileMenuClose" aria-label="Close Navigation Menu">×</button>
+    </div>
+    
+    <nav class="mobile-navigation" role="navigation">
+      <ul class="mobile-nav__list">
+        {%- for link in section.settings.main_menu.links -%}
+          <li class="mobile-nav__item">
+            <a href="{{ link.url }}" class="mobile-nav__link {% if link.active %}active{% endif %}">{{ link.title }}</a>
+          </li>
+        {%- endfor -%}
+        
+        <li class="mobile-nav__item divider"></li>
+        <li class="mobile-nav__item">
+          <a href="/account" class="mobile-nav__link secondary">My Account</a>
+        </li>
+        <li class="mobile-nav__item">
+          <a href="#wishlist" class="mobile-nav__link secondary">My Wishlist</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</div>
+
+<style>
+  .site-header {
+    width: 100%;
+    height: var(--header-height);
+    position: fixed;
+    top: 32px; /* adjusts for announcement bar */
+    left: 0;
+    z-index: 999;
+    background-color: transparent;
+    border-bottom: 1px solid transparent;
+    transition: transform 0.3s ease, background-color 0.3s ease, border-color 0.3s ease, top 0.3s ease;
+  }
+  .header-inner {
+    height: 100%;
+  }
+  .header-logo {
+    display: block;
+    height: auto;
+  }
+  
+  /* Scroll Classes styles */
+  .header-scrolled {
+    background-color: rgba(10, 10, 10, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom-color: var(--border-color);
+  }
+  
+  .header-hidden {
+    transform: translateY(-120%);
+  }
+  
+  /* Navigation menu links styles */
+  .desktop-navigation {
+    display: none;
+  }
+  .nav-menu {
+    list-style: none;
+    gap: 32px;
+  }
+  .nav-link {
+    font-size: 1.4rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    padding: 8px 0;
+    border-bottom: 2px solid transparent;
+  }
+  .nav-link:hover, .nav-link.active {
+    color: var(--text-primary);
+    border-bottom-color: var(--text-primary);
+  }
+  
+  /* Right Icons and Buttons styling */
+  .header-icon-link {
+    display: inline-flex;
+    padding: 8px;
+    position: relative;
+  }
+  .header-right {
+    gap: 8px;
+  }
+  
+  .cart-count-badge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 18px;
+    height: 18px;
+    background-color: var(--highlight-color);
+    color: #FFFFFF;
+    border-radius: 50%;
+    font-size: 1rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Mobile hamburger button */
+  .mobile-menu-toggle-btn {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 24px;
+    height: 18px;
+    margin-right: 16px;
+    background: none;
+    border: none;
+  }
+  .mobile-menu-toggle-btn .bar {
+    width: 100%;
+    height: 2px;
+    background-color: var(--text-primary);
+    transition: var(--transition-fast);
+  }
+
+  /* Full Screen Slide-in mobile Drawer menu */
+  .mobile-menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 1001;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+  }
+  .mobile-menu-overlay.active {
+    opacity: 1;
+    pointer-events: all;
+  }
+  .mobile-menu-inner {
+    width: 80%;
+    max-width: 380px;
+    height: 100%;
+    background-color: var(--surface-primary);
+    padding: 32px 24px;
+    transform: translateX(-100%);
+    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    display: flex;
+    flex-direction: column;
+  }
+  .mobile-menu-overlay.active .mobile-menu-inner {
+    transform: translateX(0);
+  }
+  .mobile-menu-header {
+    margin-bottom: 40px;
+  }
+  .mobile-menu-title {
+    font-family: var(--font-heading);
+    font-size: 2.4rem;
+    letter-spacing: 2px;
+  }
+  .mobile-menu-close {
+    font-size: 3.2rem;
+    color: var(--text-muted);
+  }
+  
+  .mobile-nav__list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .mobile-nav__item {
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+  }
+  .mobile-nav__item.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  .mobile-nav__item.divider {
+    height: 1px;
+    background-color: var(--border-color);
+    margin: 8px 0;
+  }
+  .mobile-nav__link {
+    font-size: 2.2rem;
+    font-family: var(--font-heading);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    display: block;
+  }
+  .mobile-nav__link.secondary {
+    font-family: var(--font-body);
+    font-size: 1.5rem;
+    color: var(--text-secondary);
+    letter-spacing: 1px;
+  }
+  .mobile-nav__link.active {
+    color: var(--highlight-color);
+  }
+
+  /* Responsive styling updates */
+  @media screen and (min-width: 990px) {
+    .desktop-navigation {
+      display: block;
+    }
+    .mobile-menu-toggle-btn {
+      display: none;
+    }
+    .desktop-only {
+      display: inline-flex;
+    }
+  }
+  @media screen and (max-width: 989px) {
+    .desktop-only {
+      display: none;
+    }
+  }
+  
+  /* Handle announcement bar sticky offset */
+  body.template-index .site-header {
+    top: 32px;
+  }
+  .header-scrolled {
+    top: 0 !important;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo_upload",
+      "label": "Upload Custom Logo"
+    },
+    {
+      "type": "range",
+      "id": "logo_max_width",
+      "min": 50,
+      "max": 250,
+      "step": 10,
+      "unit": "px",
+      "label": "Logo Max Width",
+      "default": 140
+    },
+    {
+      "type": "link_list",
+      "id": "main_menu",
+      "label": "Menu Link List",
+      "default": "main-menu"
+    }
+  ]
+}
+{% endschema %}

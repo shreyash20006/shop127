@@ -1,0 +1,97 @@
+{% comment %}
+   Escape Clothing - FAQ Page Template Section
+{% endcomment %}
+
+<section class="faq-page-section reveal" id="FaqPage-{{ section.id }}">
+  <div class="container" style="max-width: 800px; padding: 120px 24px 80px 24px;">
+    
+    <div class="section-header text-center" style="display: block; margin-bottom: 48px;">
+      <h1 class="section-title" style="font-size: 5.6rem; letter-spacing: 2px;">{{ page.title | default: "FREQUENTLY ASKED QUESTIONS" }}</h1>
+      <p style="color: var(--text-muted); font-size: 1.5rem; margin-top: 12px; text-transform: uppercase; letter-spacing: 1px;">Everything you need to know about our drops</p>
+    </div>
+
+    <div class="accordion">
+      {%- for block in section.blocks -%}
+        <div class="accordion-item {% if forloop.first %}active{% endif %}" {{ block.shopify_attributes }}>
+          <h3 class="accordion-title">{{ block.settings.question }}</h3>
+          <div class="accordion-content">
+            <p>{{ block.settings.answer }}</p>
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+
+  </div>
+</section>
+
+<style>
+  .faq-page-section {
+    background-color: var(--bg-color);
+  }
+</style>
+
+{% schema %}
+{
+  "name": "FAQ Page",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "faq_item",
+      "name": "FAQ Question",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question",
+          "default": "How long will my order take to arrive?"
+        },
+        {
+          "type": "textarea",
+          "id": "answer",
+          "label": "Answer",
+          "default": "We ship orders from Nagpur within 24 hours. Transit takes 3 to 7 business days PAN India depending on your location."
+        }
+      ]
+    }
+  ],
+  "default": {
+    "blocks": [
+      {
+        "type": "faq_item",
+        "settings": {
+          "question": "What payment gateways are supported?",
+          "answer": "We support Cashfree Checkout which handles UPI (Google Pay, PhonePe, Paytm), Credit/Debit cards, Net Banking, and Wallet payments. Cash on Delivery (COD) is also available."
+        }
+      },
+      {
+        "type": "faq_item",
+        "settings": {
+          "question": "What is the return/exchange policy?",
+          "answer": "We offer a 7-day hassle-free return and exchange window. The items must be unused, unwashed, and returned with original tags intact."
+        }
+      },
+      {
+        "type": "faq_item",
+        "settings": {
+          "question": "How do I choose the correct size?",
+          "answer": "Most of our catalog is tailored for an oversized, boxy streetwear fit. Refer to our Size Guide page for exact chest/shoulder/length measurements in inches."
+        }
+      },
+      {
+        "type": "faq_item",
+        "settings": {
+          "question": "How do I track my order?",
+          "answer": "Once dispatched, you will receive a tracking link via email and WhatsApp. You can also visit our Track Order page and enter your order number and email."
+        }
+      },
+      {
+        "type": "faq_item",
+        "settings": {
+          "question": "Are your fabrics pre-shrunk?",
+          "answer": "Yes, all our 100% Cotton garments are pre-shrunk and bio-washed to maintain fit and prevent shrinkage after home washing."
+        }
+      }
+    ]
+  }
+}
+{% endschema %}

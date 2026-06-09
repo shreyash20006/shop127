@@ -1,0 +1,25 @@
+{% comment %}
+   Escape Clothing - Page Main Section (Default template)
+{% endcomment %}
+
+<section class="page-main-section reveal" id="PageMain-{{ section.id }}">
+  <div class="container" style="max-width: 800px; padding: 120px 24px 80px 24px;">
+    <h1 class="section-title text-center" style="font-size: 5.6rem; margin-bottom: 40px;">{{ page.title }}</h1>
+    <div class="page-main-content" style="font-size: 1.6rem; color: var(--text-secondary); line-height: 1.8;">
+      {{ page.content }}
+    </div>
+  </div>
+</section>
+
+<style>
+  .page-main-section {
+    background-color: var(--bg-color);
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Page Details",
+  "settings": []
+}
+{% endschema %}

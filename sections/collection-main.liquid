@@ -1,0 +1,133 @@
+{% comment %}
+   Escape Clothing - Collection Product grid list with sorting and filters
+{% endcomment %}
+
+<section class="collection-main-section reveal" id="CollectionMain-{{ section.id }}">
+  <div class="container flex collection-layout-wrap">
+    
+    {% comment %} Left Sidebar: Filters & sorting {% endcomment %}
+    <aside class="collection-sidebar desktop-only">
+      <div class="sidebar-block">
+        <h3 class="sidebar-block-title">SORT BY</h3>
+        <select id="SortBySelect" onchange="location.href = this.value;" class="form-input" style="padding: 10px; font-size: 1.3rem;">
+          <option value="{{ collection.url }}?sort_by=manual" {% if collection.sort_by == 'manual' %}selected{% endif %}>Featured</option>
+          <option value="{{ collection.url }}?sort_by=price-ascending" {% if collection.sort_by == 'price-ascending' %}selected{% endif %}>Price: Low to High</option>
+          <option value="{{ collection.url }}?sort_by=price-descending" {% if collection.sort_by == 'price-descending' %}selected{% endif %}>Price: High to Low</option>
+          <option value="{{ collection.url }}?sort_by=created-descending" {% if collection.sort_by == 'created-descending' %}selected{% endif %}>Newest</option>
+        </select>
+      </div>
+
+      <div class="sidebar-block">
+        <h3 class="sidebar-block-title">FILTER BY SIZE</h3>
+        <ul class="filter-list flex" style="gap: 8px; flex-wrap: wrap; list-style: none;">
+          {%- for size in 'XS,S,M,L,XL,XXL' | split: ',' -%}
+            <li>
+              <a href="{{ collection.url }}?constraint={{ size | handle }}" class="filter-chip-btn">{{ size }}</a>
+            </li>
+          {%- endfor -%}
+        </ul>
+      </div>
+
+      <div class="sidebar-block">
+        <h3 class="sidebar-block-title">PRICE RANGE</h3>
+        <div class="flex align-center" style="gap: 12px; font-size: 1.4rem;">
+          <input type="number" placeholder="Min" class="form-input" style="padding: 8px;">
+          <span>to</span>
+          <input type="number" placeholder="Max" class="form-input" style="padding: 8px;">
+        </div>
+      </div>
+    </aside>
+
+    {% comment %} Right Product Grid {% endcomment %}
+    <div class="collection-products-wrap" style="flex: 1;">
+      
+      {%- paginate collection.products by 12 -%}
+        {%- if collection.products_count == 0 -%}
+          <div class="text-center" style="padding: 60px 0;">
+            <p style="color: var(--text-muted);">No products found in this collection.</p>
+          </div>
+        {%- else -%}
+          <div class="collection-grid grid">
+            {%- for product in collection.products -%}
+              {% render 'product-card', product: product %}
+            {%- endfor -%}
+          </div>
+
+          {%- if paginate.pages > 1 -%}
+            <div class="pagination flex justify-center align-center" style="margin-top: 60px; gap: 16px; font-size: 1.6rem;">
+              {{ paginate | default_pagination }}
+            </div>
+          {%- endif -%}
+        {%- endif -%}
+      {%- endpaginate -%}
+
+    </div>
+
+  </div>
+</section>
+
+<style>
+  .collection-main-section {
+    padding: 60px 0 100px 0;
+    background-color: var(--bg-color);
+  }
+  
+  .collection-layout-wrap {
+    gap: 40px;
+    align-items: start;
+  }
+  
+  .collection-sidebar {
+    width: 260px;
+    position: sticky;
+    top: 100px;
+  }
+  .sidebar-block {
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 24px;
+    margin-bottom: 24px;
+  }
+  .sidebar-block-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 16px;
+    letter-spacing: 1px;
+    color: var(--text-primary);
+  }
+  
+  .filter-chip-btn {
+    display: inline-flex;
+    padding: 6px 12px;
+    border: 1px solid var(--border-color);
+    font-size: 1.2rem;
+    font-weight: 600;
+    border-radius: var(--border-radius);
+  }
+  .filter-chip-btn:hover {
+    border-color: var(--text-primary);
+  }
+  
+  .collection-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  
+  @media screen and (min-width: 768px) {
+    .collection-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  @media screen and (min-width: 1200px) {
+    .collection-grid {
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Collection Products",
+  "settings": []
+}
+{% endschema %}

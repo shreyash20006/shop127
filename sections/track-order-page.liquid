@@ -1,0 +1,81 @@
+{% comment %}
+   Escape Clothing - Track Order Page Section
+   Leaves hook for AfterShip or simple carrier API tracking search
+{% endcomment %}
+
+<section class="track-order-section reveal" id="TrackOrder-{{ section.id }}">
+  <div class="container flex flex-column align-center text-center" style="max-width: 600px; padding: 120px 24px 80px 24px;">
+    
+    <h1 class="section-title" style="font-size: 5.6rem; margin-bottom: 16px;">TRACK ORDER</h1>
+    <p style="font-size: 1.6rem; color: var(--text-secondary); margin-bottom: 40px; line-height: 1.6;">
+      Enter your Order ID (found in your confirmation email) and billing email address to track your shipment's live location.
+    </p>
+
+    <div class="track-order-form-wrap" style="width: 100%; background-color: var(--surface-primary); border: 1px solid var(--border-color); padding: 40px; border-radius: var(--border-radius);">
+      
+      <form id="MockTrackForm" class="flex flex-column" style="gap: 20px;" onsubmit="handleMockTracking(event)">
+        
+        <div class="flex flex-column text-left" style="gap: 8px;">
+          <label for="TrackingOrderId" style="font-size: 1.2rem; font-weight: 700; color: var(--text-muted);">ORDER ID / ID NUMBER</label>
+          <input type="text" id="TrackingOrderId" class="form-input" placeholder="e.g. #ESC-49102" required style="text-transform: uppercase;">
+        </div>
+
+        <div class="flex flex-column text-left" style="gap: 8px;">
+          <label for="TrackingEmail" style="font-size: 1.2rem; font-weight: 700; color: var(--text-muted);">BILLING EMAIL</label>
+          <input type="email" id="TrackingEmail" class="form-input" placeholder="e.g. you@example.com" required>
+        </div>
+
+        <div style="margin-top: 12px;">
+          <button type="submit" class="btn btn-primary btn-hover-slide" style="width: 100%;">TRACK SHIPMENT</button>
+        </div>
+
+      </form>
+
+      <div id="TrackingResultsArea" style="margin-top: 32px; display: none; padding-top: 24px; border-top: 1px dashed var(--border-color);" class="text-left">
+        <h3 style="font-size: 1.8rem; font-weight: 700; margin-bottom: 16px; color: var(--text-primary);">LIVE STATUS: <span id="StatusBadge" style="color: #2ECC71;">DISPATCHED</span></h3>
+        <p style="font-size: 1.4rem; color: var(--text-secondary); margin-bottom: 8px;">Carrier: Delhivery / Blue Dart</p>
+        <p style="font-size: 1.4rem; color: var(--text-secondary); margin-bottom: 8px;">Tracking Number: <strong id="StatusTrackingNo">9481940294</strong></p>
+        <p style="font-size: 1.4rem; color: var(--text-secondary);">Last Update: Shipment departed Nagpur Hub. On track for delivery in 2 days.</p>
+      </div>
+
+    </div>
+
+    {% comment %} AfterShip widget integration placeholder {% endcomment %}
+    <div class="aftership-embed-container" style="margin-top: 40px; width: 100%;">
+      <!-- {{ render 'aftership-embed-widget' }} -->
+    </div>
+
+  </div>
+</section>
+
+<script>
+  function handleMockTracking(e) {
+    e.preventDefault();
+    const orderId = document.getElementById('TrackingOrderId').value.trim();
+    const results = document.getElementById('TrackingResultsArea');
+    const badge = document.getElementById('StatusBadge');
+    const trackNo = document.getElementById('StatusTrackingNo');
+
+    if (!results) return;
+
+    // Simulate simple API fetch status
+    trackNo.textContent = "ESC-" + Math.floor(1000000 + Math.random() * 9000000);
+    badge.textContent = "IN TRANSIT";
+    badge.style.color = "#F39C12";
+
+    results.style.display = 'block';
+  }
+</script>
+
+<style>
+  .track-order-section {
+    background-color: var(--bg-color);
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Track Order Page",
+  "settings": []
+}
+{% endschema %}

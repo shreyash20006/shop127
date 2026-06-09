@@ -1,0 +1,557 @@
+{% comment %}
+   Escape Clothing - Product Main Template Section (Souled Store Level Polish)
+{% endcomment %}
+
+<section class="product-main-section" id="ProductMain-{{ section.id }}" data-product-id="{{ product.id }}">
+  <div class="container product-main-inner grid">
+    
+    {% comment %} LEFT COLUMN: Image Gallery {% endcomment %}
+    <div class="product-gallery">
+      <div class="product-gallery__main-wrap">
+        {%- if product.featured_image != blank -%}
+          <img id="MainProductImage" 
+               src="{{ product.featured_image | image_url: width: 1000 }}" 
+               srcset="{{ product.featured_image | image_url: width: 1000 }} 1x, {{ product.featured_image | image_url: width: 2000 }} 2x"
+               alt="{{ product.featured_image.alt | escape }}" 
+               class="product-main-img">
+        {%- else -%}
+          <img id="MainProductImage" src="https://images.unsplash.com/photo-1521572267360-ee0c2909d518?q=80&w=1000&auto=format&fit=crop" alt="Streetwear product" class="product-main-img">
+        {%- endif -%}
+
+        {% comment %} Zoom Lightbox Button {% endcomment %}
+        <button id="ProductZoomButton" class="gallery-zoom-btn" aria-label="Zoom Image">
+          <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+        </button>
+
+        {% comment %} Counter indicator {% endcomment %}
+        <span class="image-gallery__counter">1 / {{ product.images.size | default: 1 }}</span>
+      </div>
+
+      {% comment %} Gallery Thumbnails List {% endcomment %}
+      {%- if product.images.size > 1 -%}
+        <div class="product-gallery__thumbnails flex mobile-scroll-container">
+          {%- for image in product.images -%}
+            <button class="product-thumbnail {% if forloop.first %}active{% endif %}" 
+                    data-src="{{ image | image_url: width: 1000 }}"
+                    data-width-src="{{ image | image_url: width: 1000 }} 1x, {{ image | image_url: width: 2000 }} 2x">
+              <img src="{{ image | image_url: width: 150, height: 200, crop: 'center' }}" alt="Product detail thumbnail">
+            </button>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+
+    {% comment %} RIGHT COLUMN: Product details info {% endcomment %}
+    <div class="product-info-wrap">
+      
+      {% comment %} Breadcrumbs {% endcomment %}
+      <nav class="breadcrumbs" aria-label="Breadcrumb">
+        <a href="/">Home</a>
+        <span class="breadcrumbs__separator">&rsaquo;</span>
+        {%- if collection -%}
+          <a href="{{ collection.url }}">{{ collection.title }}</a>
+          <span class="breadcrumbs__separator">&rsaquo;</span>
+        {%- endif -%}
+        <span class="breadcrumbs__current">{{ product.title }}</span>
+      </nav>
+
+      <h1 class="product-title">{{ product.title }}</h1>
+
+      {% comment %} Star Ratings {% endcomment %}
+      <div class="product-reviews-summary flex align-center">
+        <span class="stars">★★★★☆</span>
+        <span class="reviews-count">4.5 (128 Reviews)</span>
+      </div>
+
+      {% comment %} Price display details {% endcomment %}
+      <div class="product-price-details flex align-center">
+        <span class="price-current">₹{{ product.price | money_without_currency | replace: ',', '' }}</span>
+        {%- if product.compare_at_price > product.price -%}
+          <span class="price-compare">₹{{ product.compare_at_price | money_without_currency | replace: ',', '' }}</span>
+          
+          {%- assign save_amount = product.compare_at_price | minus: product.price -%}
+          {%- assign save_percent = save_amount | times: 100 | divided_by: product.compare_at_price -%}
+          <span class="price-savings">You save ₹{{ save_amount | money_without_currency | replace: ',', '' }} ({{ save_percent }}%)</span>
+        {%- endif -%}
+      </div>
+      <p class="tax-shipping-notice">Price inclusive of all taxes</p>
+
+      <hr class="section-divider">
+
+      {% comment %} Add-To-Cart Form {% endcomment %}
+      {%- form 'product', product, class: 'product-add-to-cart-form' -%}
+        
+        {% comment %} COLOR SELECTOR (if variant options contain color) {% endcomment %}
+        {%- for option in product.options_with_values -%}
+          {%- assign option_name_down = option.name | downcase -%}
+          {%- if option_name_down contains 'color' or option_name_down contains 'colour' -%}
+            <div class="variant-selector-wrap ColorSelector">
+              <label class="variant-label">COLOR: <span class="selected-val-label" id="SelectedColorVal">{{ option.selected_value }}</span></label>
+              <div class="swatches-row flex">
+                {%- for value in option.values -%}
+                  <label class="swatch-btn-label">
+                    <input type="radio" 
+                           name="options[{{ option.name }}]" 
+                           value="{{ value | escape }}" 
+                           {% if option.selected_value == value %}checked{% endif %}
+                           class="swatch-radio-input"
+                           onchange="document.getElementById('SelectedColorVal').textContent = this.value">
+                    <span class="swatch-btn-circle" style="background-color: {{ value | downcase }};" title="{{ value }}"></span>
+                  </label>
+                {%- endfor -%}
+              </div>
+            </div>
+          {%- endif -%}
+
+          {% comment %} SIZE SELECTOR (if variant options contain size) {% endcomment %}
+          {%- if option_name_down contains 'size' -%}
+            <div class="variant-selector-wrap SizeSelector">
+              <div class="flex justify-between align-center" style="margin-bottom: 8px;">
+                <label class="variant-label">SELECT SIZE</label>
+                <button type="button" class="size-guide-modal-btn" id="SizeGuideBtn">SIZE GUIDE</button>
+              </div>
+              <div class="sizes-row flex">
+                {%- for value in option.values -%}
+                  <label class="size-btn-label">
+                    <input type="radio" 
+                           name="options[{{ option.name }}]" 
+                           value="{{ value | escape }}" 
+                           {% if option.selected_value == value %}checked{% endif %}
+                           class="size-radio-input">
+                    <span class="size-btn-box">{{ value }}</span>
+                  </label>
+                {%- endfor -%}
+              </div>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+
+        {% comment %} Quantity Adjuster {% endcomment %}
+        <div class="quantity-selector-wrap">
+          <label class="variant-label">QUANTITY</label>
+          <div class="qty-selector flex align-center" style="width: fit-content; border: 1px solid var(--border-color);">
+            <button type="button" class="qty-btn" onclick="adjustProductQty(-1)">−</button>
+            <input type="number" id="ProductQuantityInput" name="quantity" value="1" min="1" style="width: 50px; text-align: center; font-weight: 600;">
+            <button type="button" class="qty-btn" onclick="adjustProductQty(1)">+</button>
+          </div>
+        </div>
+
+        {% comment %} Main Variant ID Selector - hidden {% endcomment %}
+        <select name="id" id="ProductVariantId" style="display: none;">
+          {%- for variant in product.variants -%}
+            <option value="{{ variant.id }}" {% if variant == product.selected_or_first_available_variant %}selected{% endif %}>
+              {{ variant.title }}
+            </option>
+          {%- endfor -%}
+        </select>
+
+        {% comment %} Buy Actions {% endcomment %}
+        <div class="buy-buttons-wrap flex flex-column" style="gap: 12px; margin-top: 32px;">
+          <button type="submit" 
+                  name="add" 
+                  class="btn btn-primary add-to-cart-submit-btn flex align-center justify-center btn-hover-slide"
+                  {% unless product.available %}disabled{% endunless %}>
+            {%- if product.available -%}
+              ADD TO CART
+            {%- else -%}
+              SOLD OUT
+            {%- endif -%}
+          </button>
+          
+          <button type="button" 
+                  class="btn btn-secondary buy-now-direct-btn flex align-center justify-center btn-hover-slide"
+                  onclick="buyProductNowDirect()"
+                  {% unless product.available %}disabled{% endunless %}>
+            BUY NOW
+          </button>
+        </div>
+
+      {%- endform -%}
+
+      {% comment %} Trust Badges snippet render {% endcomment %}
+      {% render 'trust-badges' %}
+
+      {% comment %} Delivery estimations & countdown dispatch {% endcomment %}
+      <div class="delivery-estimates-box flex flex-column">
+        <div class="estimate-row flex align-center">
+          <svg class="estimate-icon" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+          <span id="DeliveryEstimateText">Estimated delivery: Jun 14–18</span>
+        </div>
+        <div class="estimate-row flex align-center" style="margin-top: 8px; color: var(--highlight-color);">
+          <svg class="estimate-icon" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+          <span id="DispatchCountdownText">Order in next 3h 24m for same-day dispatch</span>
+        </div>
+      </div>
+
+      {% comment %} Accordion detail panels {% endcomment %}
+      <div class="accordion" style="margin-top: 40px;">
+        
+        <div class="accordion-item active">
+          <h3 class="accordion-title">Description</h3>
+          <div class="accordion-content">
+            <p>{{ product.description | default: "Premium streetwear drops from Nagpur. Custom-tailored oversized streetwear fits made with premium Indian fabrics. Designed to break the ordinary standard." }}</p>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <h3 class="accordion-title">Material & Care</h3>
+          <div class="accordion-content">
+            <ul>
+              <li>100% Premium Combed Cotton</li>
+              <li>Heavyweight 240 GSM Fleece Fabric</li>
+              <li>Cold Machine Wash inside out</li>
+              <li>Do not iron direct on prints</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <h3 class="accordion-title">Sizing & Fit</h3>
+          <div class="accordion-content">
+            <p>Oversized streetwear profile fit. We recommend picking your standard size for the signature boxy fit, or sizing down 1 size for a regular look.</p>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <h3 class="accordion-title">Shipping & Returns</h3>
+          <div class="accordion-content">
+            <p>We dispatch all orders within 24 hours. Delivered across India within 3 to 7 business days. Easy return & exchanges within a 7-day period.</p>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  {% comment %} Lightbox Modal for Gallery Image Zoom {% endcomment %}
+  <div id="ProductLightbox" class="product-lightbox-modal flex align-center justify-center">
+    <button id="LightboxImageWrapper" style="position:relative;">
+      <img id="LightboxImage" src="" alt="Zoomed view product">
+    </button>
+    <button id="LightboxClose" class="lightbox-close-btn">&times;</button>
+  </div>
+
+  {% comment %} Size Guide Modal snippet {% endcomment %}
+  {% render 'size-chart-popup' %}
+</section>
+
+<style>
+  .product-main-section {
+    padding: 120px 0 60px 0;
+    background-color: var(--bg-color);
+  }
+  .product-main-inner {
+    grid-template-columns: 1fr;
+    gap: 48px;
+    align-items: start;
+  }
+  
+  /* Gallery Styling */
+  .product-gallery__main-wrap {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 3/4;
+    overflow: hidden;
+    background-color: var(--surface-primary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+  }
+  .product-main-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+    cursor: zoom-in;
+  }
+  .product-main-img:hover {
+    transform: scale(1.04);
+  }
+  .gallery-zoom-btn {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    width: 44px;
+    height: 44px;
+    background-color: rgba(10, 10, 10, 0.7);
+    color: #FFFFFF;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+  }
+  .image-gallery__counter {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    background-color: rgba(10, 10, 10, 0.7);
+    color: #FFFFFF;
+    padding: 6px 12px;
+    font-size: 1.2rem;
+    font-weight: 700;
+    border-radius: 12px;
+    z-index: 2;
+  }
+  .product-gallery__thumbnails {
+    gap: 12px;
+    margin-top: 16px;
+  }
+  .product-thumbnail {
+    flex: 0 0 70px;
+    aspect-ratio: 3/4;
+    overflow: hidden;
+    background-color: var(--surface-primary);
+    border: 2px solid transparent;
+    padding: 0;
+  }
+  .product-thumbnail.active {
+    border-color: var(--text-primary);
+  }
+  .product-thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Info column details styling */
+  .product-title {
+    font-size: 4.8rem;
+    color: #FFFFFF;
+    margin-top: 12px;
+    margin-bottom: 8px;
+    line-height: 1.05;
+  }
+  .product-reviews-summary {
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+  
+  .product-price-details {
+    gap: 16px;
+    margin-bottom: 4px;
+  }
+  .price-current {
+    font-size: 3.2rem;
+    font-weight: 800;
+    color: #FFFFFF;
+  }
+  .price-compare {
+    font-size: 2rem;
+    color: var(--text-muted);
+    text-decoration: line-through;
+  }
+  .price-savings {
+    font-size: 1.3rem;
+    font-weight: 700;
+    background-color: rgba(46, 204, 113, 0.1);
+    color: #2ECC71;
+    padding: 4px 10px;
+    border-radius: var(--border-radius);
+    text-transform: uppercase;
+  }
+  .tax-shipping-notice {
+    font-size: 1.3rem;
+    color: var(--text-muted);
+    margin-bottom: 24px;
+  }
+  .section-divider {
+    border: 0;
+    height: 1px;
+    background-color: var(--border-color);
+    margin: 24px 0;
+  }
+  
+  /* Variant options */
+  .variant-selector-wrap {
+    margin-bottom: 28px;
+  }
+  .variant-label {
+    display: block;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+  .selected-val-label {
+    color: var(--text-primary);
+  }
+
+  /* Color Swatches row */
+  .swatches-row {
+    gap: 12px;
+  }
+  .swatch-btn-label input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  .swatch-btn-circle {
+    display: block;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 2px solid var(--border-color);
+    cursor: pointer;
+    transition: var(--transition-fast);
+    padding: 2px;
+    background-clip: content-box;
+  }
+  .swatch-btn-label input:checked + .swatch-btn-circle {
+    border-color: var(--text-primary);
+    transform: scale(1.1);
+  }
+
+  /* Size selectors */
+  .size-guide-modal-btn {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--highlight-color);
+    letter-spacing: 1px;
+    border-bottom: 1px solid var(--highlight-color);
+    padding-bottom: 2px;
+  }
+  .sizes-row {
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .size-btn-label input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  .size-btn-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 54px;
+    height: 44px;
+    border: 1px solid var(--border-color);
+    font-size: 1.4rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-fast);
+  }
+  .size-btn-label input:checked + .size-btn-box {
+    background-color: var(--text-primary);
+    color: var(--accent-inverse);
+    border-color: var(--text-primary);
+  }
+
+  .quantity-selector-wrap {
+    margin-bottom: 32px;
+  }
+  .qty-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 1.8rem;
+  }
+
+  /* Delivery Estimate styling */
+  .delivery-estimates-box {
+    margin-top: 32px;
+    background-color: var(--surface-primary);
+    border: 1px solid var(--border-color);
+    padding: 20px;
+    border-radius: var(--border-radius);
+  }
+  .estimate-row {
+    gap: 12px;
+    font-size: 1.4rem;
+    font-weight: 600;
+  }
+  .estimate-icon {
+    color: var(--text-muted);
+  }
+
+  /* Lightbox zoom modal */
+  .product-lightbox-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(10, 10, 10, 0.95);
+    z-index: 10000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+  .product-lightbox-modal.active {
+    opacity: 1;
+    pointer-events: all;
+  }
+  #LightboxImage {
+    max-width: 90vw;
+    max-height: 85vh;
+    object-fit: contain;
+  }
+  .lightbox-close-btn {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    font-size: 4.8rem;
+    color: var(--text-muted);
+    background: none;
+    border: none;
+  }
+
+  @media screen and (min-width: 990px) {
+    .product-main-inner {
+      grid-template-columns: 1.2fr 1fr;
+      gap: 64px;
+    }
+    .product-thumbnail {
+      flex: 0 0 85px;
+    }
+  }
+</style>
+
+<script>
+  function adjustProductQty(val) {
+    const input = document.getElementById('ProductQuantityInput');
+    if (!input) return;
+    let current = parseInt(input.value);
+    current += val;
+    if (current < 1) current = 1;
+    input.value = current;
+  }
+
+  function buyProductNowDirect() {
+    const variantId = document.getElementById('ProductVariantId').value;
+    const qty = document.getElementById('ProductQuantityInput').value;
+    
+    // Redirect to direct Shopify checkout URL with checkout params
+    window.location.href = `/cart/${variantId}:${qty}`;
+  }
+
+  // Local storage based Recently Viewed registration
+  document.addEventListener('DOMContentLoaded', () => {
+    const productId = "{{ product.id }}";
+    if (!productId) return;
+    
+    let viewed = localStorage.getItem('recently_viewed_products');
+    viewed = viewed ? JSON.parse(viewed) : [];
+
+    // Remove duplicates
+    viewed = viewed.filter(id => id !== productId);
+    // Add current product to start
+    viewed.unshift(productId);
+    // Limit to 6 items
+    viewed = viewed.slice(0, 6);
+
+    localStorage.setItem('recently_viewed_products', JSON.stringify(viewed));
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Product Details",
+  "settings": []
+}
+{% endschema %}

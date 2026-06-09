@@ -1,0 +1,31 @@
+{% comment %}
+   Escape Clothing - payment-icons.liquid
+   Renders standard checkout text badges for UPI, COD, Visa, Mastercard, and RuPay
+{% endcomment %}
+
+<div class="payment-badges-row flex" style="gap: 8px; flex-wrap: wrap; margin-top: 12px;">
+  <span class="payment-badge" title="UPI Payments">UPI</span>
+  <span class="payment-badge" title="Visa Cards">VISA</span>
+  <span class="payment-badge" title="Mastercard Cards">MC</span>
+  <span class="payment-badge" title="RuPay Cards">RUPAY</span>
+  <span class="payment-badge" title="Cash on Delivery">COD</span>
+  <span class="payment-badge highlighted-badge" title="Cashfree Gateway">CASHFREE</span>
+</div>
+
+<style>
+  .payment-badge {
+    background-color: var(--surface-secondary);
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    padding: 4px 10px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    border-radius: var(--border-radius);
+    text-transform: uppercase;
+  }
+  .highlighted-badge {
+    border-color: var(--highlight-color);
+    color: var(--highlight-color);
+  }
+</style>

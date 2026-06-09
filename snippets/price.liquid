@@ -1,0 +1,12 @@
+{% comment %}
+   Escape Clothing - Modular Price snippet
+   Parameters:
+     - product: Product Object (required)
+{% endcomment %}
+
+<div class="price-container flex align-center">
+  <span class="price-current font-bold" style="color: var(--text-primary);">₹{{ product.price | money_without_currency | replace: ',', '' }}</span>
+  {%- if product.compare_at_price > product.price -%}
+    <span class="price-compare" style="text-decoration: line-through; color: var(--text-muted); margin-left: 8px;">₹{{ product.compare_at_price | money_without_currency | replace: ',', '' }}</span>
+  {%- endif -%}
+</div>

@@ -1,0 +1,266 @@
+{% comment %}
+   Escape Clothing - Customer Testimonials / Reviews Section
+{% endcomment %}
+
+<section class="customer-reviews-section reveal" id="Reviews-{{ section.id }}">
+  <div class="container">
+    
+    <div class="reviews-header flex justify-between align-center">
+      <div>
+        <h2 class="section-title has-line">{{ section.settings.title | default: "WHAT THEY'RE SAYING" }}</h2>
+        <div class="overall-badge flex align-center" style="margin-top: 8px;">
+          <span class="stars" style="font-size: 1.6rem;">★★★★★</span>
+          <span class="overall-badge-text">{{ section.settings.overall_rating | default: "4.8/5 · 200+ Reviews" }}</span>
+        </div>
+      </div>
+      
+      {% comment %} Slider Arrows {% endcomment %}
+      <div class="reviews-nav-arrows flex">
+        <button class="reviews-arrow btn-prev" aria-label="Previous Review">&larr;</button>
+        <button class="reviews-arrow btn-next" aria-label="Next Review">&rarr;</button>
+      </div>
+    </div>
+
+    <div class="reviews-slider-outer">
+      <div class="reviews-slider-track flex mobile-scroll-container">
+        {%- for block in section.blocks -%}
+          <div class="review-card flex justify-between" {{ block.shopify_attributes }}>
+            <div class="review-card__header flex justify-between">
+              <span class="stars">
+                {%- assign rating = block.settings.rating | default: 5 -%}
+                {%- for i in (1..5) -%}
+                  {%- if i <= rating -%}★{%- else -%}☆{%- endif -%}
+                {%- endfor -%}
+              </span>
+              <span class="verified-buyer-badge flex align-center">
+                <svg class="verified-icon" viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="3" fill="none"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                Verified
+              </span>
+            </div>
+            
+            <p class="review-card__content">"{{ block.settings.text | default: "The oversized fit is perfect. The fabric feels premium and heavy. Nagpur is representin'!" }}"</p>
+            
+            <div class="review-card__author">
+              <h4 class="review-author-name">{{ block.settings.author | default: "Utkarsh Lanje" }}</h4>
+              <p class="review-author-meta">{{ block.settings.purchased_product | default: "Oversized Tee - Black" }}</p>
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<style>
+  .customer-reviews-section {
+    padding: 80px 0;
+    background-color: var(--surface-primary);
+    border-bottom: 1px solid var(--border-color);
+  }
+  .reviews-header {
+    margin-bottom: 40px;
+  }
+  .overall-badge-text {
+    font-size: 1.4rem;
+    color: var(--text-secondary);
+    font-weight: 600;
+    margin-left: 12px;
+    letter-spacing: 1px;
+  }
+  
+  /* Navigation Arrows */
+  .reviews-nav-arrows {
+    gap: 8px;
+    display: none; /* fallback on mobile scroll, active on desktop */
+  }
+  .reviews-arrow {
+    width: 44px;
+    height: 44px;
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    transition: var(--transition-fast);
+  }
+  .reviews-arrow:hover {
+    border-color: var(--text-primary);
+    color: var(--text-primary);
+  }
+
+  /* Slider Track layout */
+  .reviews-slider-outer {
+    width: 100%;
+    overflow: hidden;
+  }
+  .reviews-slider-track {
+    gap: 16px;
+    width: 100%;
+    scroll-behavior: smooth;
+  }
+  
+  .review-card {
+    flex: 0 0 280px;
+    flex-direction: column;
+    padding: 32px 24px;
+    background-color: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    scroll-snap-align: start;
+    min-height: 240px;
+  }
+  .review-card__header {
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  .verified-buyer-badge {
+    font-size: 1.1rem;
+    color: #2ECC71;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    gap: 4px;
+  }
+  .review-card__content {
+    font-size: 1.5rem;
+    color: var(--text-secondary);
+    font-style: italic;
+    line-height: 1.6;
+    margin-bottom: 24px;
+    flex-grow: 1;
+  }
+  .review-author-name {
+    font-size: 1.6rem;
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .review-author-meta {
+    font-size: 1.2rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  @media screen and (max-width: 989px) {
+    .mobile-scroll-container {
+      overflow-x: auto;
+      padding-bottom: 15px;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+    }
+  }
+
+  @media screen and (min-width: 990px) {
+    .reviews-nav-arrows {
+      display: flex;
+    }
+    .review-card {
+      flex: 0 0 calc(33.333% - 11px);
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const track = document.querySelector('#Reviews-{{ section.id }} .reviews-slider-track');
+    const prevBtn = document.querySelector('#Reviews-{{ section.id }} .btn-prev');
+    const nextBtn = document.querySelector('#Reviews-{{ section.id }} .btn-next');
+    
+    if (!track || !prevBtn || !nextBtn) return;
+
+    prevBtn.addEventListener('click', () => {
+      const cardWidth = track.firstElementChild.getBoundingClientRect().width + 16;
+      track.scrollLeft -= cardWidth;
+    });
+
+    nextBtn.addEventListener('click', () => {
+      const cardWidth = track.firstElementChild.getBoundingClientRect().width + 16;
+      track.scrollLeft += cardWidth;
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Customer Reviews",
+  "max_blocks": 12,
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading Text",
+      "default": "WHAT THEY'RE SAYING"
+    },
+    {
+      "type": "text",
+      "id": "overall_rating",
+      "label": "Overall Score Subtitle",
+      "default": "4.8/5 · 200+ Reviews"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Testimonial",
+      "settings": [
+        {
+          "type": "range",
+          "id": "rating",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "label": "Star Rating",
+          "default": 5
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Review Text",
+          "default": "The oversized fit is perfect. The fabric feels premium and heavy. Nagpur is representin'!"
+        },
+        {
+          "type": "text",
+          "id": "author",
+          "label": "Customer Name",
+          "default": "Utkarsh Lanje"
+        },
+        {
+          "type": "text",
+          "id": "purchased_product",
+          "label": "Product Purchased",
+          "default": "Oversized Tee - Black"
+        }
+      ]
+    }
+  ],
+  "default": {
+    "blocks": [
+      {
+        "type": "review",
+        "settings": {
+          "author": "Utkarsh Lanje",
+          "purchased_product": "Oversized Tee - Black"
+        }
+      },
+      {
+        "type": "review",
+        "settings": {
+          "author": "Shreyash W.",
+          "purchased_product": "Escape Jersey - Red"
+        }
+      },
+      {
+        "type": "review",
+        "settings": {
+          "author": "Aditya K.",
+          "purchased_product": "Baggy Cargo Pants"
+        }
+      }
+    ]
+  }
+}
+{% endschema %}

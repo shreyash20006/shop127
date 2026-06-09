@@ -1,0 +1,128 @@
+{% comment %}
+   Escape Clothing - Cart Page Section (Fallback)
+{% endcomment %}
+
+<section class="cart-page-section reveal" id="CartPage-{{ section.id }}">
+  <div class="container">
+    
+    <div class="section-header">
+      <h1 class="section-title">YOUR CART</h1>
+    </div>
+
+    {%- if cart.item_count == 0 -%}
+      <div class="cart-page-empty text-center" style="padding: 100px 0;">
+        <p style="font-size: 1.8rem; color: var(--text-muted); margin-bottom: 32px;">Your cart is currently empty.</p>
+        <a href="/collections/all" class="btn btn-primary">SHOP NEW ARRIVALS</a>
+      </div>
+    {%- else -%}
+      
+      <form action="/cart" method="post" novalidate class="cart-form grid">
+        
+        {% comment %} Left side: items list {% endcomment %}
+        <div class="cart-page-items flex flex-column">
+          
+          {% comment %} Header labels {% endcomment %}
+          <div class="cart-table-header flex justify-between desktop-only" style="border-bottom: 2px solid var(--border-color); padding-bottom: 12px; margin-bottom: 24px; color: var(--text-muted); font-size: 1.2rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;">
+            <span style="flex: 2;">PRODUCT</span>
+            <span style="flex: 1; text-align: center;">QUANTITY</span>
+            <span style="flex: 1; text-align: right;">TOTAL</span>
+          </div>
+
+          {%- for item in cart.items -%}
+            <div class="cart-page-item flex justify-between align-center" data-key="{{ item.key }}">
+              
+              <div class="cart-page-item__product flex" style="flex: 2; gap: 16px;">
+                <div class="product-img-wrap" style="width: 80px;">
+                  <img src="{{ item.image | image_url: width: 160 }}" alt="{{ item.title }}" style="width: 100%; aspect-ratio: 3/4; object-fit: cover;">
+                </div>
+                <div class="product-details-wrap">
+                  <h3 style="font-size: 1.6rem; font-weight: 700; text-transform: uppercase;"><a href="{{ item.url }}">{{ item.product.title }}</a></h3>
+                  {%- if item.variant.title != 'Default Title' -%}-
+                    <p style="font-size: 1.3rem; color: var(--text-muted); margin-top: 4px;">Size/Variant: {{ item.variant.title }}</p>
+                  {%- endif -%}
+                  <p style="font-size: 1.4rem; font-weight: 600; margin-top: 8px;">₹{{ item.original_price | divided_by: 100 }}</p>
+                  
+                  <button type="button" 
+                          onclick="changeQuantity('{{ item.key }}', 0)" 
+                          style="font-size: 1.3rem; color: var(--highlight-color); font-weight: 600; margin-top: 12px; text-transform: uppercase; letter-spacing: 1px;">
+                    Remove
+                  </button>
+                </div>
+              </div>
+
+              {% comment %} Quantity selectors {% endcomment %}
+              <div class="cart-page-item__qty flex justify-center" style="flex: 1;">
+                <div class="qty-selector flex align-center" style="border: 1px solid var(--border-color); padding: 4px 8px;">
+                  <button type="button" onclick="changeQuantity('{{ item.key }}', {{ item.quantity | minus: 1 }})" style="padding: 0 8px; font-size: 1.6rem;">&minus;</button>
+                  <span style="padding: 0 12px; font-size: 1.4rem;">{{ item.quantity }}</span>
+                  <button type="button" onclick="changeQuantity('{{ item.key }}', {{ item.quantity | plus: 1 }})" style="padding: 0 8px; font-size: 1.6rem;">+</button>
+                </div>
+              </div>
+
+              {% comment %} Total line item price {% endcomment %}
+              <div class="cart-page-item__total text-right" style="flex: 1;">
+                <p style="font-size: 1.8rem; font-weight: 700;">₹{{ item.final_line_price | divided_by: 100 }}</p>
+              </div>
+
+            </div>
+          {%- endfor -%}
+
+        </div>
+
+        {% comment %} Right side: summary and checkout {% endcomment %}
+        <div class="cart-page-sidebar">
+          <div class="sidebar-inner" style="background-color: var(--surface-primary); border: 1px solid var(--border-color); padding: 32px 24px; border-radius: var(--border-radius);">
+            
+            <h2 style="font-size: 2.2rem; margin-bottom: 24px;">ORDER SUMMARY</h2>
+
+            <div class="flex justify-between align-center" style="margin-bottom: 16px;">
+              <span style="font-size: 1.5rem; color: var(--text-secondary);">Subtotal</span>
+              <span style="font-size: 2.4rem; font-weight: 800; color: #FFFFFF;">₹{{ cart.total_price | divided_by: 100 }}</span>
+            </div>
+
+            <p style="font-size: 1.3rem; color: var(--text-muted); margin-bottom: 24px; line-height: 1.5;">Taxes and shipping calculated at checkout</p>
+            
+            <button type="submit" name="checkout" class="btn btn-primary btn-hover-slide" style="width: 100%;">
+              PROCEED TO CHECKOUT &rarr;
+            </button>
+            
+            <div style="margin-top: 16px;">
+              <a href="/collections/all" class="btn btn-secondary text-center" style="width: 100%;">CONTINUE SHOPPING</a>
+            </div>
+
+            {% render 'trust-badges' %}
+
+          </div>
+        </div>
+
+      </form>
+
+    {%- endif -%}
+
+  </div>
+</section>
+
+<style>
+  .cart-page-section {
+    padding: 120px 0;
+    background-color: var(--bg-color);
+  }
+  .cart-form {
+    grid-template-columns: 1fr;
+    gap: 48px;
+    align-items: start;
+  }
+  .cart-page-item {
+    border-bottom: 1px solid var(--border-color);
+    padding: 24px 0;
+  }
+  .cart-page-item:first-of-type {
+    padding-top: 0;
+  }
+  
+  @media screen and (min-width: 990px) {
+    .cart-form {
+      grid-template-columns: 2fr 1fr;
+    }
+  }
+</style>

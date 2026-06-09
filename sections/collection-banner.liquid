@@ -1,0 +1,78 @@
+{% comment %}
+   Escape Clothing - Collection Banner Section
+{% endcomment %}
+
+<section class="collection-banner flex align-center justify-center text-center reveal" id="CollectionBanner-{{ section.id }}">
+  
+  {% comment %} Banner Background {% endcomment %}
+  <div class="collection-banner__bg" style="{% if collection.image != blank %}background-image: url('{{ collection.image | image_url: width: 1600 }}');{% else %}background-image: url('https://images.unsplash.com/photo-1509631179647-0177331693ae?q=80&w=1600&auto=format&fit=crop');{% endif %}"></div>
+  <div class="collection-banner__overlay"></div>
+
+  <div class="collection-banner__content container">
+    <h1 class="collection-banner__title">{{ collection.title }}</h1>
+    {%- if collection.description != blank -%}
+      <p class="collection-banner__desc">{{ collection.description }}</p>
+    {%- endif -%}
+    <span class="collection-banner__count">{{ collection.products_count | default: 0 }} Products</span>
+  </div>
+
+</section>
+
+<style>
+  .collection-banner {
+    position: relative;
+    width: 100%;
+    height: 35vh;
+    min-height: 250px;
+    overflow: hidden;
+    margin-top: calc(-1 * var(--header-height) - 32px); /* overlap header */
+  }
+  .collection-banner__bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+  }
+  .collection-banner__overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(10, 10, 10, 0.7);
+    z-index: 1;
+  }
+  .collection-banner__content {
+    position: relative;
+    z-index: 2;
+    padding-top: 80px; /* offset for header */
+  }
+  .collection-banner__title {
+    font-size: 5.6rem;
+    color: #FFFFFF;
+    margin-bottom: 12px;
+  }
+  .collection-banner__desc {
+    font-size: 1.6rem;
+    color: var(--text-secondary);
+    max-width: 600px;
+    margin: 0 auto 16px auto;
+  }
+  .collection-banner__count {
+    font-size: 1.3rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--highlight-color);
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Collection Banner",
+  "settings": []
+}
+{% endschema %}

@@ -1,0 +1,295 @@
+{% comment %}
+   Escape Clothing - 999 Drop Banner Section with Countdown
+{% endcomment %}
+
+<section class="combo-drop-banner reveal" id="ComboDrop-{{ section.id }}">
+  <div class="container combo-drop-inner flex align-center justify-between">
+    
+    <div class="combo-drop__content">
+      <p class="combo-drop__badge uppercase">LIMITED TIME DROP</p>
+      <h2 class="combo-drop__title">{{ section.settings.title | default: "3 FOR ₹999" }}</h2>
+      <p class="combo-drop__subtext">{{ section.settings.subtext | default: "Limited drops. Don't miss out." }}</p>
+      
+      {% comment %} Urgency Notification {% endcomment %}
+      <div class="combo-drop__urgency flex align-center">
+        <span class="pulse-dot"></span>
+        <span class="urgency-text">Only <strong id="UrgencyStockCount">{{ section.settings.stock_count | default: 14 }}</strong> items remaining in this drop!</span>
+      </div>
+
+      <div style="margin-top: 32px;">
+        <a href="{{ section.settings.button_link | default: '/collections/999-drop' }}" class="btn btn-primary btn-hover-slide">{{ section.settings.button_text | default: "SHOP THE DROP" }}</a>
+      </div>
+    </div>
+
+    {% comment %} Countdown Timer {% endcomment %}
+    <div class="combo-drop__timer">
+      <p class="timer-label">DROP ENDS IN</p>
+      <div class="countdown-boxes-container flex" data-end-date="{{ section.settings.end_date | default: '2026-12-31T23:59:59' }}">
+        
+        <div class="timer-box">
+          <span class="timer-num" id="TimerDays-{{ section.id }}">00</span>
+          <span class="timer-unit">Days</span>
+        </div>
+        <div class="timer-divider">:</div>
+        
+        <div class="timer-box">
+          <span class="timer-num" id="TimerHours-{{ section.id }}">00</span>
+          <span class="timer-unit">Hrs</span>
+        </div>
+        <div class="timer-divider">:</div>
+        
+        <div class="timer-box">
+          <span class="timer-num" id="TimerMinutes-{{ section.id }}">00</span>
+          <span class="timer-unit">Mins</span>
+        </div>
+        <div class="timer-divider">:</div>
+        
+        <div class="timer-box">
+          <span class="timer-num" id="TimerSeconds-{{ section.id }}">00</span>
+          <span class="timer-unit">Secs</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<style>
+  .combo-drop-banner {
+    padding: 80px 0;
+    background: linear-gradient(135deg, #1c0a0a 0%, #0c0000 50%, #000000 100%);
+    border-top: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+    position: relative;
+  }
+  .combo-drop-banner::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: radial-gradient(rgba(255, 59, 48, 0.08) 1px, transparent 0);
+    background-size: 24px 24px;
+    z-index: 0;
+    pointer-events: none;
+  }
+  .combo-drop-inner {
+    flex-direction: column;
+    gap: 48px;
+    position: relative;
+    z-index: 1;
+  }
+  .combo-drop__content {
+    max-width: 580px;
+    text-align: center;
+  }
+  .combo-drop__badge {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--highlight-color);
+    letter-spacing: 3px;
+    margin-bottom: 12px;
+  }
+  .combo-drop__title {
+    font-size: 6.4rem;
+    margin-bottom: 16px;
+    color: #FFFFFF;
+  }
+  .combo-drop__subtext {
+    font-size: 1.8rem;
+    color: var(--text-secondary);
+    margin-bottom: 24px;
+  }
+  
+  /* Urgency dot */
+  .combo-drop__urgency {
+    display: inline-flex;
+    background-color: rgba(255, 59, 48, 0.1);
+    border: 1px solid rgba(255, 59, 48, 0.3);
+    padding: 8px 16px;
+    border-radius: var(--border-radius);
+  }
+  .pulse-dot {
+    width: 8px;
+    height: 8px;
+    background-color: var(--highlight-color);
+    border-radius: 50%;
+    margin-right: 12px;
+    animation: urgency-pulse 1.5s infinite;
+  }
+  .urgency-text {
+    font-size: 1.4rem;
+    color: var(--text-secondary);
+  }
+  
+  @keyframes urgency-pulse {
+    0% { box-shadow: 0 0 0 0 rgba(255, 59, 48, 0.7); }
+    70% { box-shadow: 0 0 0 8px rgba(255, 59, 48, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(255, 59, 48, 0); }
+  }
+
+  /* Timer Display */
+  .combo-drop__timer {
+    text-align: center;
+  }
+  .timer-label {
+    font-size: 1.3rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+  }
+  .timer-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 70px;
+  }
+  .timer-num {
+    font-family: var(--font-heading);
+    font-size: 4.8rem;
+    color: #FFFFFF;
+    line-height: 1;
+  }
+  .timer-unit {
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-top: 4px;
+    letter-spacing: 1px;
+  }
+  .timer-divider {
+    font-size: 3.6rem;
+    font-weight: 300;
+    color: var(--border-color);
+    margin: 0 8px;
+    line-height: 1;
+  }
+
+  @media screen and (min-width: 990px) {
+    .combo-drop-inner {
+      flex-direction: row;
+      text-align: left;
+    }
+    .combo-drop__content {
+      text-align: left;
+    }
+    .timer-box {
+      width: 90px;
+    }
+    .timer-num {
+      font-size: 7.2rem;
+    }
+    .timer-divider {
+      font-size: 5.6rem;
+      margin: 0 16px;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const timerContainer = document.querySelector('#ComboDrop-{{ section.id }} .countdown-boxes-container');
+    if (!timerContainer) return;
+
+    const endDateStr = timerContainer.getAttribute('data-end-date');
+    const endDate = new Date(endDateStr).getTime();
+
+    const dEl = document.getElementById('TimerDays-{{ section.id }}');
+    const hEl = document.getElementById('TimerHours-{{ section.id }}');
+    const mEl = document.getElementById('TimerMinutes-{{ section.id }}');
+    const sEl = document.getElementById('TimerSeconds-{{ section.id }}');
+
+    function updateTimer() {
+      const now = new Date().getTime();
+      const distance = endDate - now;
+
+      if (distance < 0) {
+        if (dEl) dEl.innerText = "00";
+        if (hEl) hEl.innerText = "00";
+        if (mEl) mEl.innerText = "00";
+        if (sEl) sEl.innerText = "00";
+        return;
+      }
+
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      if (dEl) dEl.innerText = days < 10 ? '0' + days : days;
+      if (hEl) hEl.innerText = hours < 10 ? '0' + hours : hours;
+      if (mEl) mEl.innerText = minutes < 10 ? '0' + minutes : minutes;
+      if (sEl) sEl.innerText = seconds < 10 ? '0' + seconds : seconds;
+    }
+
+    updateTimer();
+    setInterval(updateTimer, 1000);
+
+    // Mock stock counts decrementing slowly
+    const stockEl = document.getElementById('UrgencyStockCount');
+    if (stockEl) {
+      let currentStock = parseInt(stockEl.innerText);
+      setInterval(() => {
+        if (currentStock > 3 && Math.random() > 0.7) {
+          currentStock--;
+          stockEl.innerText = currentStock;
+        }
+      }, 25000); // decrement stock count occasionally
+    }
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Combo Deal 999 Drop",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Promotion Text",
+      "default": "3 FOR ₹999"
+    },
+    {
+      "type": "text",
+      "id": "subtext",
+      "label": "Subheading Text",
+      "default": "Limited drops. Don't miss out."
+    },
+    {
+      "type": "range",
+      "id": "stock_count",
+      "min": 5,
+      "max": 50,
+      "step": 1,
+      "label": "Remaining Stock Counter",
+      "default": 14
+    },
+    {
+      "type": "text",
+      "id": "end_date",
+      "label": "Drop End Date (ISO Format)",
+      "default": "2026-12-31T23:59:59",
+      "info": "Format: YYYY-MM-DDTHH:MM:SS"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "SHOP THE DROP"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button Link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Combo Deal Drop",
+      "category": "Promotional"
+    }
+  ]
+}
+{% endschema %}
