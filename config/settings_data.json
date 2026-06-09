@@ -1,19 +1,14 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "current": {
-    "sections": {
-      "announcement-bar": {
-        "type": "announcement-bar",
-        "settings": {}
-      },
-      "header": {
-        "type": "header",
-        "settings": {}
-      },
-      "footer": {
-        "type": "footer",
-        "settings": {}
-      }
-    },
     "settings": {
       "color_bg": "#0A0A0A",
       "color_surface": "#111111",
@@ -33,6 +28,46 @@
       "social_facebook_link": "https://facebook.com/escapeclothing",
       "social_twitter_link": "https://twitter.com/escapeclothing",
       "logo_width": 140
-    }
+    },
+    "sections": {
+      "announcement-bar": {
+        "type": "announcement-bar",
+        "blocks": {
+          "announcement_G9PrMk": {
+            "type": "announcement",
+            "settings": {
+              "text": "🚚 Free Shipping on orders above ₹999"
+            }
+          }
+        },
+        "block_order": [
+          "announcement_G9PrMk"
+        ],
+        "settings": {
+          "bg_color": "#ff3b30",
+          "text_color": "#ffffff",
+          "interval": 4
+        }
+      },
+      "header": {
+        "type": "header",
+        "settings": {
+          "logo_upload": "shopify://shop_images/639473422_17856452319665295_1281961209085143497_n.jpg",
+          "logo_max_width": 140,
+          "main_menu": "main-menu"
+        }
+      },
+      "footer": {
+        "type": "footer",
+        "settings": {
+          "brand_description": "Premium urban streetwear engineered for those who refuse to fit in. Designed in India, inspired by global street culture."
+        }
+      },
+      "cart-drawer": {
+        "type": "cart-drawer",
+        "settings": {}
+      }
+    },
+    "content_for_index": []
   }
 }

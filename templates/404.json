@@ -1,11 +1,32 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main-404": {
       "type": "main-404",
+      "disabled": true,
       "settings": {}
+    },
+    "product_grid_KqteVF": {
+      "type": "product-grid",
+      "name": "Product Grid",
+      "settings": {
+        "title": "NEW ARRIVALS",
+        "subtitle": "LATEST FROM THE STREETS",
+        "collection": "frontpage",
+        "products_limit": 4
+      }
     }
   },
   "order": [
-    "main-404"
+    "main-404",
+    "product_grid_KqteVF"
   ]
 }
