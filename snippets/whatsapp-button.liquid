@@ -1,60 +1,15 @@
 {% comment %}
-   Escape Clothing - Floating WhatsApp Chat Widget
+   Escape Clothing - Floating WhatsApp Button (Redesigned with Tailwind CSS)
 {% endcomment %}
 
-<a href="https://wa.me/{{ settings.social_whatsapp_phone | replace: '+', '' | replace: ' ', '' | default: '918261094774' }}?text={{ settings.social_whatsapp_message | default: 'Hi! I want to order from Escape Clothing 👣' | url_encode }}" 
-   target="_blank" 
-   class="whatsapp-floating-widget whatsapp-widget-bounce" 
-   aria-label="Chat with Escape Clothing on WhatsApp">
-  
-  <svg class="whatsapp-widget-icon" viewBox="0 0 24 24" width="28" height="28" fill="currentColor">
-    <path d="M12.012 2c-5.506 0-9.989 4.478-9.99 9.984a9.96 9.96 0 0 0 1.335 4.975L2 22l5.197-1.362a9.926 9.926 0 0 0 4.814 1.248h.005c5.505 0 9.99-4.478 9.99-9.986 0-2.67-1.037-5.178-2.924-7.065A9.923 9.923 0 0 0 12.012 2zm5.727 14.047c-.244.688-1.22 1.26-1.68 1.32-.419.055-.956.088-2.969-.748-2.574-1.062-4.225-3.69-4.354-3.86-.127-.17-1.047-1.393-1.047-2.656 0-1.263.662-1.884.897-2.119.236-.235.514-.294.685-.294.17 0 .341.002.49.009.155.007.363-.059.568.44.21.512.72 1.76.782 1.884.062.126.104.272.02.44-.082.17-.123.272-.246.419-.123.147-.258.328-.369.44-.123.126-.252.264-.108.512.144.248.641 1.06 1.378 1.719.95.848 1.748 1.11 1.996 1.235.248.126.393.104.538-.063.146-.17.62-.72.786-.96.166-.24.33-.2.553-.118.224.082 1.417.67 1.666.793.248.123.414.185.476.294.062.11.062.637-.182 1.325z"/>
-  </svg>
-  
-  <span class="whatsapp-tooltip">Chat with us!</span>
+<a class="fixed bottom-8 right-8 z-[100] group" 
+   href="https://wa.me/{{ settings.social_whatsapp_phone | replace: '+', '' | replace: ' ', '' | default: '918261094774' }}?text={{ settings.social_whatsapp_message | default: 'Hi! I want to order from Escape Clothing 👣' | url_encode }}" 
+   target="_blank"
+   aria-label="Chat on WhatsApp">
+  <div class="relative w-16 h-16 flex items-center justify-center bg-[#25D366] text-white rounded-full shadow-lg hover:scale-110 transition-transform duration-300">
+    <div class="absolute inset-0 bg-[#25D366] rounded-full blur-xl opacity-20 group-hover:opacity-40 transition-opacity"></div>
+    <svg class="w-8 h-8 relative z-10" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12.012 2c-5.506 0-9.989 4.478-9.99 9.984a9.96 9.96 0 0 0 1.335 4.975L2 22l5.197-1.362a9.926 9.926 0 0 0 4.814 1.248h.005c5.505 0 9.99-4.478 9.99-9.986 0-2.67-1.037-5.178-2.924-7.065A9.923 9.923 0 0 0 12.012 2zm5.727 14.047c-.244.688-1.22 1.26-1.68 1.32-.419.055-.956.088-2.969-.748-2.574-1.062-4.225-3.69-4.354-3.86-.127-.17-1.047-1.393-1.047-2.656 0-1.263.662-1.884.897-2.119.236-.235.514-.294.685-.294.17 0 .341.002.49.009.155.007.363-.059.568.44.21.512.72 1.76.782 1.884.062.126.104.272.02.44-.082.17-.123.272-.246.419-.123.147-.258.328-.369.44-.123.126-.252.264-.108.512.144.248.641 1.06 1.378 1.719.95.848 1.748 1.11 1.996 1.235.248.126.393.104.538-.063.146-.17.62-.72.786-.96.166-.24.33-.2.553-.118.224.082 1.417.67 1.666.793.248.123.414.185.476.294.062.11.062.637-.182 1.325z"/>
+    </svg>
+  </div>
 </a>
-
-<style>
-  .whatsapp-floating-widget {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    width: 60px;
-    height: 60px;
-    background-color: #25D366;
-    color: #FFFFFF;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 998;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    transition: transform 0.2s ease;
-  }
-  
-  .whatsapp-floating-widget:hover {
-    transform: scale(1.08);
-  }
-  
-  .whatsapp-tooltip {
-    position: absolute;
-    right: 70px;
-    background-color: var(--surface-primary);
-    color: var(--text-primary);
-    border: 1px solid var(--border-color);
-    padding: 6px 12px;
-    font-size: 1.2rem;
-    font-weight: 600;
-    white-space: nowrap;
-    border-radius: var(--border-radius);
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s ease;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-  }
-  
-  .whatsapp-floating-widget:hover .whatsapp-tooltip {
-    opacity: 1;
-  }
-</style>

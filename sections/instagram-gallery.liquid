@@ -1,124 +1,46 @@
 {% comment %}
-   Escape Clothing - Instagram Gallery Section
+   Escape Clothing - Instagram Gallery Section (Redesigned with Tailwind CSS)
 {% endcomment %}
 
-<section class="instagram-gallery-section reveal" id="InstagramGallery-{{ section.id }}">
-  <div class="container">
-    
-    <div class="section-header text-center" style="display: block; margin-bottom: 32px;">
-      <h2 class="section-title" style="font-size: 3.6rem; letter-spacing: 2px;">
-        <a href="{{ settings.social_instagram_link | default: 'https://instagram.com/escape_clothing17' }}" target="_blank" style="color: var(--text-primary); border-bottom: 2px solid transparent;">
-          {{ section.settings.handle | default: "@escape_clothing17" }}
+<section class="py-24 bg-surface-container-lowest" id="InstagramGallery-{{ section.id }}">
+  <div class="px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto text-center mb-12">
+    <h2 class="font-headline-lg text-headline-lg text-primary uppercase">JOIN THE CULT</h2>
+    <a class="font-label-lg text-label-lg text-outline hover:text-primary transition-colors" href="{{ settings.social_instagram_link | default: 'https://instagram.com/escape_clothing17' }}" target="_blank">
+      {{ section.settings.handle | default: "@escape_clothing17" }}
+    </a>
+  </div>
+  
+  <div class="grid grid-cols-2 md:grid-cols-6">
+    {%- for block in section.blocks limit: 6 -%}
+      <div class="aspect-square overflow-hidden border border-background" {{ block.shopify_attributes }}>
+        <a href="{{ settings.social_instagram_link | default: 'https://instagram.com/escape_clothing17' }}" target="_blank" class="block w-full h-full">
+          {%- if block.settings.image != blank -%}
+            <img class="w-full h-full object-cover hover:scale-110 transition-transform duration-700 grayscale hover:grayscale-0" 
+                 src="{{ block.settings.image | image_url: width: 600, height: 600, crop: 'center' }}" 
+                 alt="Instagram gallery image" 
+                 loading="lazy">
+          {%- else -%}
+            {% comment %} Mockup images {% endcomment %}
+            {%- capture placeholder_url -%}
+              {%- case forloop.index -%}
+                {%- when 1 -%} https://lh3.googleusercontent.com/aida-public/AB6AXuBJyMFfyOYB-Jkp2ACuWTvj7CwLLbaMrweqf9UckQrMsU-BXLxB60_WBUPk9VbHbrydjqYLI_vHDcJXbia3kZO0YU3v80O0OOa1zMlVg4Ein8sro_T5wMRVaCMR7aPKLwWWc5qQbFcMSL7HV8djK3W6tiguHeMVgPlina5i1en__LmruQ6uoobVcw1HzkWY1S5mPRL2tEf3rFydUYystMPL4x0XTb1CjN3pioCHLAbK4uK8MFL1fnt_r4w0kC3u7R27FT1B2lDbH4w
+                {%- when 2 -%} https://lh3.googleusercontent.com/aida-public/AB6AXuA9KXGtFhYYQrnWNq32HRk1rX3Fa9P74Pr-8xJyyQ54DGQVFZE38aUmxFSNETFp0x5x6KceJqeN50So5ZUsGtp1k3E5LtmHUR69JZu1REAVXLX_Wn-GJ6xO_OtGCgFVFwfEmMrsZ_6KfE0zbX7rmKYlQ4aSbtWBjnzw_DRfpXSB9LmdQYtWMmMdB4qSjrtL4Cl11uFHqijKYnnTuCDrDF-HLKKv2YZpHRyAVrP4y1EUYu_Z9HpDQwqGfYNjvCoLqel_e3kxlSUJn6w
+                {%- when 3 -%} https://lh3.googleusercontent.com/aida-public/AB6AXuB0_GtrTtwpyd2c6l8NOuMh0cPi3kSjrmEV5gEnFTrmcOlioSarGcBeOXHRUAsGPGwr9cQqVlfWCxzcYCqNw6qk1oND8AeVknsQ2T7XLKcOjivaY1nFbyuT2aSCQBayrq5cXZzrwYGAz15AzR1YytYwrNqCAYrFAsEGClfXiE2uV12PnCLT2Q0UIOjr0zmTKUfQxqOAewZq30QcHuGWSIUr3eAZsts-TSuNIuvPHUvYkWKsN-7RXsncmw5HvaianuObdf7bScBbGdo
+                {%- when 4 -%} https://lh3.googleusercontent.com/aida-public/AB6AXuBh69YuicQm06PfwKzYy1tyL8WWjcYUPELKbh9UwMWdQgjXimOT0DFz4P2Ik981hPSeBvPlEurMp61-ZdSZ0mvGjyvOqmGGnwvS84Bcg7tCL7n2CEDfHXmb-rI8QTMr9VWJP5QgANtpnkVeiYmmqRjqHvTOQRjm8V7oWicNCdW9j9-04DByim2BZ9QJfZH4YgPRd2fbBTRqrat5leBby37Nabb-yRVIiKddsvdgVvkRMLiXrldYK6Qvsz29MoEsYfU78rfPT3KVi1E
+                {%- when 5 -%} https://lh3.googleusercontent.com/aida-public/AB6AXuDqB5xAYl5x_Nt5Zx59gIiuxJJDCuuOJ8BfcJJRyKFTCO5YOU2w1fUVWICen6g4e0EAyLyro5JQhVOB4Nhzkq07JnAIu81mowvO38EcJ2WiGFV66MooSXLNHED_jouJl4I4Wsx0JESE9QnTOG_6zPT8L6jHMmYpDmf3G4J3kyjYZHjko9N3ZXk3te2OxnJVKpJPrFuGUAri3z3-0bKXkpQ2wojrgWGd85RFJ12UP2YztUml5z5hu-LM5-At9W02_PCeVyZHg6OuRfo
+                {%- else -%} https://lh3.googleusercontent.com/aida-public/AB6AXuCnkEjWzcf4TfjIAQeYZRSNdIzfw2IGwqvB_Yvg3M6UtjPm29iineHLzczS47mtGjVnXJ70knZn4E4RexWNl9f9bRAsVcRgl60ChLXLo-CxTOobDBYgxhd75ltmKaUkH5biLOZvx3iYuXZAqT6UXjeSSMTZYYMyXMHp6TBFAFD7pvzFN-cwqg90hCcVJKmRxQj_pDW9CT2IKL3fPxXZGeRKp7-tQrNaJwTbMGnfmov--INi7ZuCdjIu7LfwwcaUwYay5llo_vQtPpg
+              {%- endcase -%}
+            {%- endcapture -%}
+            <img class="w-full h-full object-cover hover:scale-110 transition-transform duration-700 grayscale hover:grayscale-0" 
+                 src="{{ placeholder_url | strip }}" 
+                 alt="IG photo placeholder" 
+                 loading="lazy">
+          {%- endif -%}
         </a>
-      </h2>
-      <p style="font-size: 1.4rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; margin-top: 8px;">TAG US TO GET FEATURED #ESCAPE</p>
-    </div>
-
-    <div class="instagram-grid grid">
-      {%- for block in section.blocks limit: 6 -%}
-        <a href="{{ settings.social_instagram_link | default: 'https://instagram.com/escape_clothing17' }}" target="_blank" class="instagram-item" {{ block.shopify_attributes }}>
-          <div class="instagram-item__image-wrap">
-            {%- if block.settings.image != blank -%}
-              <img class="instagram-item__image" src="{{ block.settings.image | image_url: width: 600, height: 600, crop: 'center' }}" alt="Streetwear gallery image" loading="lazy">
-            {%- else -%}
-              {%- capture placeholder_url -%}
-                {%- case forloop.index -%}
-                  {%- when 1 -%} https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=600&auto=format&fit=crop
-                  {%- when 2 -%} https://images.unsplash.com/photo-1529139574466-a303027c1d8b?q=80&w=600&auto=format&fit=crop
-                  {%- when 3 -%} https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=600&auto=format&fit=crop
-                  {%- when 4 -%} https://images.unsplash.com/photo-1539109136881-3be0616acf4b?q=80&w=600&auto=format&fit=crop
-                  {%- when 5 -%} https://images.unsplash.com/photo-1509631179647-0177331693ae?q=80&w=600&auto=format&fit=crop
-                  {%- else -%} https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?q=80&w=600&auto=format&fit=crop
-                {%- endcase -%}
-              {%- endcapture -%}
-              <img class="instagram-item__image" src="{{ placeholder_url | strip }}" alt="Streetwear gallery placeholder" loading="lazy">
-            {%- endif -%}
-            
-            {% comment %} Overlay displaying Instagram logo {% endcomment %}
-            <div class="instagram-item__overlay flex align-center justify-center">
-              <svg class="instagram-icon" viewBox="0 0 24 24" width="36" height="36" stroke="currentColor" stroke-width="2" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
-            </div>
-          </div>
-        </a>
-      {%- endfor -%}
-    </div>
-
-    <div class="instagram-gallery-cta text-center" style="margin-top: 40px;">
-      <a href="{{ settings.social_instagram_link | default: 'https://instagram.com/escape_clothing17' }}" target="_blank" class="view-all-link">FOLLOW US ON INSTAGRAM &rarr;</a>
-    </div>
-
+      </div>
+    {%- endfor -%}
   </div>
 </section>
-
-<style>
-  .instagram-gallery-section {
-    padding: 80px 0;
-    background-color: var(--bg-color);
-  }
-  .instagram-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-  }
-  .instagram-item {
-    aspect-ratio: 1/1;
-    overflow: hidden;
-    position: relative;
-    border-radius: var(--border-radius);
-    border: 1px solid var(--border-color);
-  }
-  .instagram-item__image-wrap {
-    width: 100%;
-    height: 100%;
-    position: relative;
-  }
-  .instagram-item__image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.6s ease;
-  }
-  
-  .instagram-item__overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.6);
-    opacity: 0;
-    z-index: 1;
-    color: #FFFFFF;
-    transition: opacity 0.3s ease;
-  }
-  
-  .instagram-icon {
-    transform: scale(0.8);
-    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  }
-  
-  /* Hover effects */
-  .instagram-item:hover .instagram-item__image {
-    transform: scale(1.06);
-  }
-  .instagram-item:hover .instagram-item__overlay {
-    opacity: 1;
-  }
-  .instagram-item:hover .instagram-icon {
-    transform: scale(1);
-  }
-
-  @media screen and (min-width: 768px) {
-    .instagram-grid {
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
-    }
-  }
-  @media screen and (min-width: 990px) {
-    .instagram-grid {
-      grid-template-columns: repeat(6, 1fr);
-    }
-  }
-</style>
 
 {% schema %}
 {
@@ -143,6 +65,12 @@
           "label": "Upload Image"
         }
       ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Instagram Gallery",
+      "category": "Social Media"
     }
   ],
   "default": {

@@ -1,0 +1,68 @@
+{% comment %}
+   Escape Clothing - Related Products (OS 2.0)
+   Displays other products from the current collection
+{% endcomment %}
+
+<section class="related-products py-24 bg-surface" id="RelatedProducts-{{ section.id }}">
+  <div class="px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+    {%- assign related_collection = collection -%}
+    {%- if related_collection == blank -%}
+      {%- for c in product.collections -%}
+        {%- if c.handle != 'all' and c.handle != 'frontpage' -%}
+          {%- assign related_collection = c -%}
+          {%- break -%}
+        {%- endif -%}
+      {%- endfor -%}
+    {%- endif -%}
+
+    {%- if related_collection != blank and related_collection.products_count > 1 -%}
+      <div class="mb-12">
+        <h2 class="font-headline-lg text-headline-lg uppercase text-primary">{{ section.settings.title | default: "RELATED DROPS" }}</h2>
+        <p class="font-label-lg text-label-lg text-outline">MATCH THE AESTHETIC</p>
+      </div>
+
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-gutter">
+        {%- assign current_product_id = product.id -%}
+        {%- assign limit = section.settings.products_to_show -%}
+        {%- assign counter = 0 -%}
+
+        {%- for prod in related_collection.products -%}
+          {%- if prod.id != current_product_id -%}
+            {% render 'product-card', product: prod %}
+            {%- assign counter = counter | plus: 1 -%}
+            {%- if counter >= limit -%}{%- break -%}{%- endif -%}
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Related Products",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading Text",
+      "default": "RELATED DROPS"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "min": 2,
+      "max": 8,
+      "step": 2,
+      "label": "Number of Products to Show",
+      "default": 4
+    }
+  ],
+  "presets": [
+    {
+      "name": "Related Products",
+      "category": "Products"
+    }
+  ]
+}
+{% endschema %}

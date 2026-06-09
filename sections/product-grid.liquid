@@ -1,62 +1,69 @@
 {% comment %}
-   Escape Clothing - Modular Product Grid Section (Reusable)
+   Escape Clothing - Modular Product Grid Section (Redesigned with Tailwind CSS)
 {% endcomment %}
 
-<section class="product-grid-section reveal" id="ProductGrid-{{ section.id }}">
-  <div class="container">
-    
-    <div class="section-header">
-      <h2 class="section-title has-line">{{ section.settings.title | default: "NEW ARRIVALS" }}</h2>
+<section class="py-24 bg-surface-elevated" id="ProductGrid-{{ section.id }}">
+  <div class="px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+    <div class="flex justify-between items-end mb-12">
+      <div>
+        <h2 class="font-headline-lg text-headline-lg uppercase text-primary">{{ section.settings.title | default: "NEW ARRIVALS" }}</h2>
+        {%- if section.settings.subtitle != blank -%}
+          <p class="font-label-lg text-label-lg text-outline">{{ section.settings.subtitle }}</p>
+        {%- endif -%}
+      </div>
       {%- if section.settings.collection != blank -%}
-        <a href="{{ collections[section.settings.collection].url }}" class="view-all-link">VIEW ALL</a>
+        <a class="text-primary font-label-lg text-label-lg border-b border-primary hover:text-outline hover:border-outline transition-all" href="{{ collections[section.settings.collection].url }}">VIEW ALL</a>
       {%- endif -%}
     </div>
-
-    <div class="products-grid-container grid">
+    
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-gutter">
       {%- assign selected_collection = collections[section.settings.collection] -%}
       {%- if selected_collection != blank and selected_collection.products_count > 0 -%}
         {%- for product in selected_collection.products limit: section.settings.products_limit -%}
           {% render 'product-card', product: product %}
         {%- endfor -%}
       {%- else -%}
-        {% comment %} Placeholder products for preview in Shopify Editor {% endcomment %}
+        {% comment %} Placeholder items for local theme preview matching mockup {% endcomment %}
         {%- for i in (1..section.settings.products_limit) -%}
-          <div class="product-card-placeholder" style="border: 1px solid var(--border-color); padding: 12px; background-color: var(--surface-primary);">
-            <div style="aspect-ratio: 3/4; background-color: var(--surface-secondary); margin-bottom: 12px;" class="skeleton"></div>
-            <p style="font-size: 1.1rem; color: var(--highlight-color); font-weight: 700; margin-bottom: 4px;">STREETWEAR</p>
-            <h4 style="font-size: 1.4rem; font-family: var(--font-body); margin-bottom: 8px;">SAMPLE APPAREL CARD</h4>
-            <p style="font-weight: 600;">₹999</p>
+          <div class="group cursor-pointer">
+            <div class="relative aspect-3-4 bg-surface mb-6 overflow-hidden">
+              {%- case i -%}
+                {%- when 1 -%}
+                  <span class="absolute top-4 left-4 z-10 bg-primary text-on-primary font-label-lg text-[10px] px-2 py-1 uppercase">NEW</span>
+                  <img alt="Obsidian Hoodie" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCW2bXLgmindKtIYfhJYcms1uuafD98WgQ4kKKO1MNjOIYzUcm2F2ZzQ9Dv5MoNeqjBn6BtMNrjXfiao9yhpxZofEEobXcVdtu-PBQUE-qLhfn8j9YFQrpjva5sEGhr9tyLDpxRZ-F66pSMpmXHkTyObp1FuI8ce4IdWObS56brr6P2A9hhL_uGDoQlcqPfRYE8eftc5zo7ItcnjeX2OwEZICmYw9B9rke4A8F3gKBs-_6ZlvH2Y9V8lrLGl1fZNgNbEXNcgI4LGuo"/>
+                {%- when 2 -%}
+                  <span class="absolute top-4 left-4 z-10 bg-alert-drop text-white font-label-lg text-[10px] px-2 py-1 uppercase">🔥 HOT</span>
+                  <img alt="Acid Wash Tee" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBiZeFwWN5yHtrfiTlGjMZHnUUY9oQq1pDZIVPt2gfmPAXvgSRgFach-CgxP158jidRFk5WQeG924nK-jLjs9cxPHRhwcFlT4VfysJAjh1OELkoZ0jfnBNCObHQGC7jLiPY67QQseIuTzvq4BmWA0JJqveUhKU5I8OgHRjGOKu3wIc8UmFN6mScZU1TXU3ZkZPU-WpWPH7pbeo_2l-2c114bdvFM298mqqE4dHVgyeNFkTpJb93DIQXRvD7-Tf5Svi421KUeh7zW5E"/>
+                {%- when 3 -%}
+                  <img alt="Technical Cargo" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAphwd82DYZ-XMbYifMdZCDeRTOih6cVUseP7N7h_haHdqTVFTGOhEwALQ4UwVS3ITNAxohMdPgr0VwcLEL7u5FDi3c1u4RuZWoBctyiKgFt6phmf1I9gHfxAYuw7TmBG6d2FXUCS1BPiS539dgBESD3yG12uWYcNfxVZBaXj9lLXlqESc5Ct_4l5IVdhAsyDFoZ2qx8-GeoSijqyIC5-bVPhFGSZy7hXcbrkYeemWJ_h17c7QChGv5NuxWegaqYsd4I7yrycupVos"/>
+                {%- when 4 -%}
+                  <span class="absolute top-4 left-4 z-10 bg-primary text-on-primary font-label-lg text-[10px] px-2 py-1 uppercase">NEW</span>
+                  <img alt="Graphite Jersey" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuArYZZOoAhqAsoZFmfK8a5uj1kWnnQG5X9pYFw46S94LSNBfOLC1quwH125R_eOWrVA8fsNrXeTUQ8dl-OHBnNPamF6Al9_zqm55Dp5z6GmhSeAUJ3FF3yLUXHzwswAeSUw2e1K-BS1DvUBwgNlvrYL-3MV4XJuknzBnsC08O7V9g6trur4jcK8dGRP9nGiF13xj23E6W0rJ07e2F3P29kfW4Lgr4K0Svo2hVfT7hFjWUtqIXv7u34-CIPk-s5bZgUvs0Yo0YdDyHA"/>
+              {%- endcase -%}
+              <button class="absolute bottom-0 w-full bg-primary text-on-primary py-4 font-label-lg uppercase transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">ADD TO CART</button>
+            </div>
+            <h3 class="font-title-lg text-title-lg text-primary uppercase tracking-tight">
+              {%- case i -%}
+                {%- when 1 -%} OBSIDIAN HOODIE
+                {%- when 2 -%} ACID WASH TEE
+                {%- when 3 -%} TECHNICAL CARGO
+                {%- when 4 -%} GRAPHITE JERSEY
+              {%- endcase -%}
+            </h3>
+            <p class="font-price-display text-price-display text-primary mt-1">
+              {%- case i -%}
+                {%- when 1 -%} ₹2,499
+                {%- when 2 -%} ₹1,299
+                {%- when 3 -%} ₹3,999
+                {%- when 4 -%} ₹1,899
+              {%- endcase -%}
+            </p>
           </div>
         {%- endfor -%}
       {%- endif -%}
     </div>
-
   </div>
 </section>
-
-<style>
-  .product-grid-section {
-    padding: 80px 0;
-    background-color: var(--bg-color);
-  }
-  .products-grid-container {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
-  }
-  
-  @media screen and (min-width: 768px) {
-    .products-grid-container {
-      grid-template-columns: repeat(3, 1fr);
-    }
-  }
-  
-  @media screen and (min-width: 990px) {
-    .products-grid-container {
-      grid-template-columns: repeat(4, 1fr);
-      gap: 24px;
-    }
-  }
-</style>
 
 {% schema %}
 {
@@ -67,6 +74,12 @@
       "id": "title",
       "label": "Heading Text",
       "default": "NEW ARRIVALS"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subheading Text",
+      "default": "LATEST FROM THE STREETS"
     },
     {
       "type": "collection",

@@ -1,153 +1,60 @@
 {% comment %}
-   Escape Clothing - Featured Categories Section
+   Escape Clothing - Featured Categories Section (Redesigned with Tailwind CSS)
 {% endcomment %}
 
-<section class="featured-categories-section reveal" id="FeaturedCategories-{{ section.id }}">
-  <div class="container">
-    
-    <div class="section-header">
-      <h2 class="section-title has-line">{{ section.settings.title | default: "SHOP BY CATEGORY" }}</h2>
-    </div>
+<section class="py-24 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto" id="FeaturedCategories-{{ section.id }}">
+  <div class="mb-12">
+    <h2 class="font-headline-lg text-headline-lg uppercase text-primary">{{ section.settings.title | default: "CATEGORIES" }}</h2>
+  </div>
+  
+  <div class="grid grid-cols-2 md:grid-cols-5 gap-gutter">
+    {%- for block in section.blocks -%}
+      {%- assign is_promo = false -%}
+      {%- if forloop.index == 5 or block.settings.title contains '999' -%}
+        {%- assign is_promo = true -%}
+      {%- endif -%}
 
-    <div class="categories-grid flex mobile-scroll-container">
-      {%- for block in section.blocks -%}
-        <a href="{{ block.settings.collection_link | default: '/collections/all' }}" class="category-card" {{ block.shopify_attributes }}>
-          <div class="category-card__image-wrap">
-            {%- if block.settings.image != blank -%}
-              <img class="category-card__image" 
-                   src="{{ block.settings.image | image_url: width: 600 }}" 
-                   alt="{{ block.settings.title }}" 
-                   loading="lazy">
-            {%- else -%}
-              {% comment %} Fallback beautiful Unsplash streetwear assets {% endcomment %}
-              {%- capture placeholder_url -%}
-                {%- case forloop.index -%}
-                  {%- when 1 -%} https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=600&auto=format&fit=crop
-                  {%- when 2 -%} https://images.unsplash.com/photo-1521572267360-ee0c2909d518?q=80&w=600&auto=format&fit=crop
-                  {%- when 3 -%} https://images.unsplash.com/photo-1618354691373-d851c5c3a990?q=80&w=600&auto=format&fit=crop
-                  {%- when 4 -%} https://images.unsplash.com/photo-1506152983158-b4a74a01c721?q=80&w=600&auto=format&fit=crop
-                  {%- else -%} https://images.unsplash.com/photo-1556821840-3a63f95609a7?q=80&w=600&auto=format&fit=crop
-                {%- endcase -%}
-              {%- endcapture -%}
-              <img class="category-card__image" 
-                   src="{{ placeholder_url | strip }}" 
-                   alt="{{ block.settings.title }}" 
-                   loading="lazy">
-            {%- endif -%}
-            
-            <div class="category-card__overlay"></div>
-            
-            <div class="category-card__content">
-              <h3 class="category-card__title">{{ block.settings.title }}</h3>
-              <span class="category-card__explore">Explore &rarr;</span>
-            </div>
-          </div>
-        </a>
-      {%- endfor -%}
-    </div>
+      <a class="group relative overflow-hidden aspect-3-4 bg-surface-container {% if is_promo %}col-span-2 md:col-span-1{% endif %}" 
+         href="{{ block.settings.collection_link | default: '/collections/all' }}" 
+         {{ block.shopify_attributes }}>
+        
+        {%- if block.settings.image != blank -%}
+          <img class="w-full h-full object-cover {% unless is_promo %}grayscale transition-all duration-700 group-hover:scale-110 group-hover:grayscale-0{% else %}transition-all duration-700 group-hover:scale-110{% endunless %}" 
+               src="{{ block.settings.image | image_url: width: 600 }}" 
+               alt="{{ block.settings.title }}" 
+               loading="lazy">
+        {%- else -%}
+          {% comment %} Fallback images matching mockup {% endcomment %}
+          {%- capture placeholder_url -%}
+            {%- case forloop.index -%}
+              {%- when 1 -%} https://lh3.googleusercontent.com/aida-public/AB6AXuBmJ7k5ufWGBOcEhXOQt6_6iRH706PmLCDufd7zAqwBhTaqYk4Bmyrv4O982Bt2WV0my-GrUgvZJ6ZzUAx75VQhsuWy0nPQMXE76p7C9EebMgSigiyD6fyRFKwoJV75wyXNFPeIJYmQ-HklhRc0eL5aKOHLyJkBbMVwXvcBjj5FB7Moc8FQgyotINpMqRVUADWlLLZ_6RGBGfL4vOr1jZJqxYdvuTApp4uedkg9znnVh35XnAN4Lpm5dlTDXKTVt97C_KyRcYS7XJw
+              {%- when 2 -%} https://lh3.googleusercontent.com/aida-public/AB6AXuCUkk2GmPLID1uow4zfjEjPxmIk_uEYFrCM_agkhnGxcuLIsmsIz2qLEpGRD7E7Er4hi4JEKBV6Eh3gcYa4CVH_QOOch9nh6cM9pzsIcOHsyGgQH6vZOWUUpKRhV2BA_Y8Hj6anGf2Ht58g4M7IRYQB7AB-AKrxQv3AEt0FalvOv2auf8UsFl-VS6lYuLCYLaFhuzOWIpjYEuaOSt3lJNgicpkWPZ2LMnvEhMO525bnIu53Ph_m43tNI6XNfg5zyc5ayyiIxrchJ8o
+              {%- when 3 -%} https://lh3.googleusercontent.com/aida-public/AB6AXuASmFt1-pjZxSMKSWuq7X5E2FTVOSDNbJ2E0Wsxv1w4XoZjaZ03zqjEvWixzbO_mvBjGE9VSHKXnq-0KprOe5yOyAKzd1QvoBo3iA3ZFaf7h4o1hoJaD2_YwqTloAszMkaPvlRSrCL5cIEqiO0nsdg3O-uYTQPrM1CYXkukH0cNrOHYa4fTTrGs1zf--y_qSYHkNXTCxLpmeFi7FKCUcX72Dm9Vj2tMINOup_b9SO4hLbWPAPlMZqHks4ouVQEfTCnppLDhCPS4AhA
+              {%- when 4 -%} https://lh3.googleusercontent.com/aida-public/AB6AXuAzzBVxXu6ekmnDekc4vF3nsa-sCkYJakL5KEVdc7sYOyKzARV0XBqJMylWqt30IPhvWSWTWWD0XyUc7fCTSw7LuWMYdWiEouNzHn_7txoMqcLOz0Y4dPEyQJwjfTnt7x8VYsygynRvBI6pVX-Fz86VXgv_QN7GJqRwNLPrPKOU9SsINY-J6wkmmi-VOxVhHxNiJ1EREiIxcf70Ol3CKofYQndkNe3UXIW0nFc-9-PMx78AiJSKrd8RrWYMMuTvH-EELANnrQj-oSg
+              {%- else -%} https://lh3.googleusercontent.com/aida-public/AB6AXuC2CTtDMaO-JJji-oaiie76s4vZzcRr3eYmtgx3O6pYpDuWUU9y8dg6Vf47L00a_8C89VbiNqS3mwgEHSPCRwZlAwYX2QfiFhzR-p3w2cXMl1V84c1MN78HJCgQUlH_I35Hips1hq2o6JZS3VyKzmvMVy7XztfIbVTDeOh4rZ_WgQQHApXvxWZ0N604GZZTniLlJdpVZAUqkASgGUJexFVcOf6gX1rM953l6_jC3he7GxjMdlpj1nwauq_B5t3dJeAoGN_MKzchF3k
+            {%- endcase -%}
+          {%- endcapture -%}
+          <img class="w-full h-full object-cover {% unless is_promo %}grayscale transition-all duration-700 group-hover:scale-110 group-hover:grayscale-0{% else %}transition-all duration-700 group-hover:scale-110{% endunless %}" 
+               src="{{ placeholder_url | strip }}" 
+               alt="{{ block.settings.title }}" 
+               loading="lazy">
+        {%- endif -%}
 
+        {%- if is_promo -%}
+          <div class="absolute inset-0 bg-alert-drop/10 group-hover:bg-alert-drop/0 transition-colors"></div>
+        {%- endif -%}
+
+        <div class="absolute inset-0 bg-gradient-to-t {% if is_promo %}from-black/90{% else %}from-black/80{% endif %} via-transparent to-transparent"></div>
+        
+        <div class="absolute bottom-6 left-6">
+          <p class="font-headline-md text-headline-md uppercase {% if is_promo %}text-alert-drop tracking-tight{% else %}text-primary{% endif %}">
+            {{ block.settings.title }}
+          </p>
+        </div>
+      </a>
+    {%- endfor -%}
   </div>
 </section>
-
-<style>
-  .featured-categories-section {
-    padding: 80px 0;
-    background-color: var(--bg-color);
-  }
-  .categories-grid {
-    gap: 16px;
-    width: 100%;
-  }
-  .category-card {
-    flex: 0 0 260px; /* layout for horizontal scroll */
-    aspect-ratio: 3/4;
-    position: relative;
-    overflow: hidden;
-    border-radius: var(--border-radius);
-    border: 1px solid var(--border-color);
-  }
-  .category-card__image-wrap {
-    width: 100%;
-    height: 100%;
-    position: relative;
-  }
-  .category-card__image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
-  }
-  .category-card__overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.2) 60%, rgba(0,0,0,0) 100%);
-    transition: var(--transition-smooth);
-    z-index: 1;
-  }
-  .category-card__content {
-    position: absolute;
-    bottom: 24px;
-    left: 24px;
-    right: 24px;
-    z-index: 2;
-  }
-  .category-card__title {
-    font-size: 2.8rem;
-    color: #FFFFFF;
-    margin-bottom: 8px;
-    letter-spacing: 1px;
-    transition: var(--transition-smooth);
-  }
-  .category-card__explore {
-    font-size: 1.3rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    color: var(--highlight-color);
-    display: inline-block;
-    transform: translateY(15px);
-    opacity: 0;
-    transition: var(--transition-smooth);
-  }
-
-  /* Hover Animations */
-  .category-card:hover .category-card__image {
-    transform: scale(1.05);
-  }
-  .category-card:hover .category-card__overlay {
-    background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.1) 60%, rgba(0,0,0,0) 100%);
-  }
-  .category-card:hover .category-card__explore {
-    transform: translateY(0);
-    opacity: 1;
-  }
-
-  /* Horizontal Scroll behavior on Mobile */
-  @media screen and (max-width: 989px) {
-    .mobile-scroll-container {
-      overflow-x: auto;
-      padding-bottom: 15px;
-      scroll-snap-type: x mandatory;
-      -webkit-overflow-scrolling: touch;
-    }
-    .category-card {
-      scroll-snap-align: start;
-    }
-  }
-
-  @media screen and (min-width: 990px) {
-    .categories-grid {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-    }
-    .category-card {
-      flex: none;
-    }
-  }
-</style>
 
 {% schema %}
 {
@@ -158,7 +65,7 @@
       "type": "text",
       "id": "title",
       "label": "Heading Text",
-      "default": "SHOP BY CATEGORY"
+      "default": "CATEGORIES"
     }
   ],
   "blocks": [
@@ -185,27 +92,33 @@
       ]
     }
   ],
+  "presets": [
+    {
+      "name": "Featured Categories",
+      "category": "Collections"
+    }
+  ],
   "default": {
     "blocks": [
       {
         "type": "category",
-        "settings": { "title": "Jerseys" }
+        "settings": { "title": "JERSEYS" }
       },
       {
         "type": "category",
-        "settings": { "title": "Oversized Tees" }
+        "settings": { "title": "OVERSIZED TEES" }
       },
       {
         "type": "category",
-        "settings": { "title": "Shirts" }
+        "settings": { "title": "SHIRTS" }
       },
       {
         "type": "category",
-        "settings": { "title": "Bottoms" }
+        "settings": { "title": "BOTTOMS" }
       },
       {
         "type": "category",
-        "settings": { "title": "₹999 Drop" }
+        "settings": { "title": "₹999 DROP" }
       }
     ]
   }

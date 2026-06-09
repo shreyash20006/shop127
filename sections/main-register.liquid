@@ -1,0 +1,81 @@
+{% comment %}
+   Escape Clothing - Customer Registration Page (OS 2.0)
+{% endcomment %}
+
+<section class="py-24 bg-surface text-primary min-h-[70vh] flex items-center" id="CustomerRegister-{{ section.id }}">
+  <div class="px-margin-mobile w-full max-w-md mx-auto">
+    
+    <div class="space-y-8">
+      <div class="text-center">
+        <h1 class="font-display-lg text-5xl uppercase tracking-tighter">CREATE ACCOUNT</h1>
+        <p class="font-label-lg text-xs text-outline mt-2 uppercase tracking-widest">SIGN UP TO UNLOCK EXCLUSIVE DISCOUNTS & REWARDS</p>
+      </div>
+
+      {%- form 'create_customer', class: 'space-y-6' -%}
+        {{ form.errors | default_errors }}
+
+        <div class="space-y-2">
+          <label for="FirstName" class="block font-label-lg text-xs text-outline uppercase tracking-wider">First Name</label>
+          <input type="text" 
+                 name="customer[first_name]" 
+                 id="FirstName" 
+                 {% if form.first_name %}value="{{ form.first_name }}"{% endif %}
+                 autocomplete="given-name" 
+                 class="w-full bg-surface-accent border border-outline-variant p-4 text-primary font-label-lg focus:border-primary focus:ring-0 rounded-none transition-colors">
+        </div>
+
+        <div class="space-y-2">
+          <label for="LastName" class="block font-label-lg text-xs text-outline uppercase tracking-wider">Last Name</label>
+          <input type="text" 
+                 name="customer[last_name]" 
+                 id="LastName" 
+                 {% if form.last_name %}value="{{ form.last_name }}"{% endif %}
+                 autocomplete="family-name" 
+                 class="w-full bg-surface-accent border border-outline-variant p-4 text-primary font-label-lg focus:border-primary focus:ring-0 rounded-none transition-colors">
+        </div>
+
+        <div class="space-y-2">
+          <label for="RegisterEmail" class="block font-label-lg text-xs text-outline uppercase tracking-wider">Email Address</label>
+          <input type="email" 
+                 name="customer[email]" 
+                 id="RegisterEmail" 
+                 {% if form.email %}value="{{ form.email }}"{% endif %}
+                 autocomplete="email" 
+                 autocorrect="off" 
+                 autocapitalize="off" 
+                 required
+                 class="w-full bg-surface-accent border border-outline-variant p-4 text-primary font-label-lg focus:border-primary focus:ring-0 rounded-none transition-colors">
+        </div>
+
+        <div class="space-y-2">
+          <label for="RegisterPassword" class="block font-label-lg text-xs text-outline uppercase tracking-wider">Password</label>
+          <input type="password" 
+                 name="customer[password]" 
+                 id="RegisterPassword" 
+                 autocomplete="new-password" 
+                 required
+                 class="w-full bg-surface-accent border border-outline-variant p-4 text-primary font-label-lg focus:border-primary focus:ring-0 rounded-none transition-colors">
+        </div>
+
+        <div class="pt-4 space-y-4">
+          <button type="submit" class="w-full bg-primary text-on-primary py-4 font-label-lg text-label-lg uppercase tracking-widest hover:opacity-90 transition-all active:scale-95">
+            CREATE ACCOUNT
+          </button>
+          
+          <p class="text-center font-body-md text-sm text-outline">
+            Already have an account? 
+            <a href="{{ routes.account_login_url }}" class="text-primary font-semibold underline hover:text-outline transition-colors">Sign in here</a>
+          </p>
+        </div>
+      {%- endform -%}
+    </div>
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Customer Register",
+  "settings": []
+}
+{% endschema %}

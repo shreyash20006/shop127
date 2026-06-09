@@ -1,192 +1,66 @@
 {% comment %}
-   Escape Clothing - Footer Section
+   Escape Clothing - Footer Section (Redesigned with Tailwind CSS)
 {% endcomment %}
 
-<footer class="site-footer" role="contentinfo">
-  <div class="container footer-top grid">
+<footer class="bg-surface-container-lowest dark:bg-surface-container-lowest border-t border-surface-container-highest w-full py-20" role="contentinfo">
+  <div class="grid grid-cols-2 md:grid-cols-5 gap-gutter px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
     
-    {% comment %} Column 1: Brand details {% endcomment %}
-    <div class="footer-col footer-brand">
-      <a href="/" class="footer-logo-link">
-        <img src="https://res.cloudinary.com/dsqxboxoc/image/upload/q_auto/f_auto/v1780928834/639473422_17856452319665295_1281961209085143497_n_mmtgqs.jpg" 
-             alt="Escape Clothing Footer Logo" 
-             class="footer-logo"
-             style="max-width: 140px; margin-bottom: 16px;">
-      </a>
-      <p class="footer-brand-desc">{{ section.settings.brand_description | default: "Escape the ordinary. Premium streetwear designed for the bold Gen-Z minds. Handcrafted in India." }}</p>
+    {% comment %} Left Branding Column {% endcomment %}
+    <div class="col-span-2">
+      <h2 class="font-headline-lg text-headline-lg text-primary mb-6 uppercase tracking-tighter">ESCAPE CLOTHING</h2>
+      <p class="font-body-md text-ink-muted max-w-xs mb-8">
+        {{ section.settings.brand_description | default: "Premium urban streetwear engineered for those who refuse to fit in. Designed in India, inspired by global street culture." }}
+      </p>
       
-      {% comment %} Payment Icons row {% endcomment %}
-      <div class="payment-icons-row flex align-center">
-        {% render 'payment-icons' %}
-      </div>
-    </div>
-
-    {% comment %} Column 2: Shop links {% endcomment %}
-    <div class="footer-col footer-links-col">
-      <h3 class="footer-col-title">SHOP CATALOG</h3>
-      <ul class="footer-links-list">
-        <li><a href="/collections/new-arrivals">New Arrivals</a></li>
-        <li><a href="/collections/jerseys">Jerseys</a></li>
-        <li><a href="/collections/oversized-tees">Oversized Tees</a></li>
-        <li><a href="/collections/shirts">Shirts</a></li>
-        <li><a href="/collections/bottoms">Bottoms</a></li>
-        <li><a href="/collections/999-drop">₹999 Drop</a></li>
-      </ul>
-    </div>
-
-    {% comment %} Column 3: Customer support {% endcomment %}
-    <div class="footer-col footer-links-col">
-      <h3 class="footer-col-title">CUSTOMER SUPPORT</h3>
-      <ul class="footer-links-list">
-        <li><a href="/pages/faq">FAQ</a></li>
-        <li><a href="/pages/contact">Contact Us</a></li>
-        <li><a href="/pages/track-order">Track Order</a></li>
-        <li><a href="/pages/size-guide">Size Guide</a></li>
-      </ul>
-    </div>
-
-    {% comment %} Column 4: Policies {% endcomment %}
-    <div class="footer-col footer-links-col">
-      <h3 class="footer-col-title">POLICIES</h3>
-      <ul class="footer-links-list">
-        <li><a href="/policies/shipping-policy">Shipping Policy</a></li>
-        <li><a href="/policies/refund-policy">Refund Policy</a></li>
-        <li><a href="/policies/privacy-policy">Privacy Policy</a></li>
-        <li><a href="/policies/terms-of-service">Terms & Conditions</a></li>
-      </ul>
-    </div>
-
-    {% comment %} Column 5: Connect details {% endcomment %}
-    <div class="footer-col footer-connect">
-      <h3 class="footer-col-title">CONNECT WITH US</h3>
-      <p style="font-size: 1.4rem; color: var(--text-muted); margin-bottom: 16px;">Drop us a line or follow our drops.</p>
-      
-      <div class="footer-social-icons flex">
-        <a href="{{ settings.social_instagram_link | default: 'https://instagram.com/escape_clothing17' }}" 
-           target="_blank" 
-           class="social-icon-link instagram-glow" 
-           aria-label="Follow us on Instagram">
-          <svg class="icon icon-instagram" viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
-        </a>
-        <a href="https://wa.me/{{ settings.social_whatsapp_phone | replace: '+', '' | replace: ' ', '' | default: '918261094774' }}?text={{ settings.social_whatsapp_message | url_encode }}" 
-           target="_blank" 
-           class="social-icon-link whatsapp-glow" 
-           aria-label="Chat with us on WhatsApp">
-          <svg class="icon icon-whatsapp" viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M12.012 2c-5.506 0-9.989 4.478-9.99 9.984a9.96 9.96 0 0 0 1.335 4.975L2 22l5.197-1.362a9.926 9.926 0 0 0 4.814 1.248h.005c5.505 0 9.99-4.478 9.99-9.986 0-2.67-1.037-5.178-2.924-7.065A9.923 9.923 0 0 0 12.012 2zm5.727 14.047c-.244.688-1.22 1.26-1.68 1.32-.419.055-.956.088-2.969-.748-2.574-1.062-4.225-3.69-4.354-3.86-.127-.17-1.047-1.393-1.047-2.656 0-1.263.662-1.884.897-2.119.236-.235.514-.294.685-.294.17 0 .341.002.49.009.155.007.363-.059.568.44.21.512.72 1.76.782 1.884.062.126.104.272.02.44-.082.17-.123.272-.246.419-.123.147-.258.328-.369.44-.123.126-.252.264-.108.512.144.248.641 1.06 1.378 1.719.95.848 1.748 1.11 1.996 1.235.248.126.393.104.538-.063.146-.17.62-.72.786-.96.166-.24.33-.2.553-.118.224.082 1.417.67 1.666.793.248.123.414.185.476.294.062.11.062.637-.182 1.325z"/></svg>
-        </a>
-        <a href="mailto:support@escapeclothing.in" 
-           class="social-icon-link mail-glow" 
-           aria-label="Email support">
-          <svg class="icon icon-mail" viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2" fill="none"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+      <div class="flex gap-4">
+        {%- if settings.social_instagram_link != blank -%}
+          <a class="w-10 h-10 border border-outline-variant flex items-center justify-center hover:bg-primary hover:text-on-primary transition-all" href="{{ settings.social_instagram_link }}" target="_blank">
+            <span class="material-symbols-outlined text-lg">public</span>
+          </a>
+        {%- endif -%}
+        
+        <a class="w-10 h-10 border border-outline-variant flex items-center justify-center hover:bg-primary hover:text-on-primary transition-all" href="https://wa.me/{{ settings.social_whatsapp_phone | replace: '+', '' | replace: ' ', '' | default: '918261094774' }}?text={{ settings.social_whatsapp_message | url_encode }}" target="_blank">
+          <span class="material-symbols-outlined text-lg">share</span>
         </a>
       </div>
     </div>
 
+    {% comment %} Columns for Navigation {% endcomment %}
+    <div>
+      <h4 class="font-label-lg text-label-lg text-primary uppercase mb-6">SHOP</h4>
+      <ul class="space-y-4">
+        <li><a class="font-label-lg text-label-lg text-ink-muted hover:text-primary transition-colors" href="/collections/new-arrivals">NEW ARRIVALS</a></li>
+        <li><a class="font-label-lg text-label-lg text-ink-muted hover:text-primary transition-colors" href="/collections/jerseys">JERSEYS</a></li>
+        <li><a class="font-label-lg text-label-lg text-ink-muted hover:text-primary transition-colors" href="/collections/oversized-tees">OVERSIZED TEES</a></li>
+        <li><a class="font-label-lg text-label-lg text-ink-muted hover:text-primary transition-colors" href="/collections/999-drop">₹999 DROP</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h4 class="font-label-lg text-label-lg text-primary uppercase mb-6">SUPPORT</h4>
+      <ul class="space-y-4">
+        <li><a class="font-label-lg text-label-lg text-ink-muted hover:text-primary transition-colors" href="/pages/contact">CONTACT US</a></li>
+        <li><a class="font-label-lg text-label-lg text-ink-muted hover:text-primary transition-colors" href="/pages/track-order">TRACK ORDER</a></li>
+        <li><a class="font-label-lg text-label-lg text-ink-muted hover:text-primary transition-colors" href="/policies/refund-policy">RETURNS</a></li>
+        <li><a class="font-label-lg text-label-lg text-ink-muted hover:text-primary transition-colors" href="/policies/shipping-policy">SHIPPING</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h4 class="font-label-lg text-label-lg text-primary uppercase mb-6">POLICIES</h4>
+      <ul class="space-y-4">
+        <li><a class="font-label-lg text-label-lg text-ink-muted hover:text-primary transition-colors" href="/policies/privacy-policy">PRIVACY POLICY</a></li>
+        <li><a class="font-label-lg text-label-lg text-ink-muted hover:text-primary transition-colors" href="/policies/terms-of-service">TERMS OF SERVICE</a></li>
+        <li><a class="font-label-lg text-label-lg text-ink-muted hover:text-primary transition-colors" href="https://wa.me/{{ settings.social_whatsapp_phone | replace: '+', '' | replace: ' ', '' | default: '918261094774' }}?text={{ settings.social_whatsapp_message | url_encode }}">WHATSAPP</a></li>
+        <li><a class="font-label-lg text-label-lg text-ink-muted hover:text-primary transition-colors" href="{{ settings.social_instagram_link | default: 'https://instagram.com/escape_clothing17' }}">INSTAGRAM</a></li>
+      </ul>
+    </div>
   </div>
 
-  <div class="footer-bottom border-top">
-    <div class="container flex justify-between align-center footer-bottom-inner">
-      <p class="footer-copyright">© {{ 'now' | date: "%Y" }} Escape Clothing. All rights reserved.</p>
-      <p class="footer-made-in">Made with ❤️ in Nagpur</p>
-    </div>
+  <div class="mt-20 pt-8 border-t border-outline-variant px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto text-center">
+    <p class="font-label-lg text-xs text-ink-muted">© {{ 'now' | date: "%Y" }} ESCAPE CLOTHING. ALL RIGHTS RESERVED.</p>
   </div>
 </footer>
-
-<style>
-  .site-footer {
-    background-color: #0D0D0D;
-    color: var(--text-secondary);
-    padding-top: 80px;
-    border-top: 1px solid var(--border-color);
-  }
-  .footer-top {
-    grid-template-columns: 1fr;
-    gap: 40px;
-    margin-bottom: 60px;
-  }
-  .footer-col-title {
-    font-size: 1.8rem;
-    color: var(--text-primary);
-    margin-bottom: 24px;
-    letter-spacing: 2px;
-  }
-  .footer-brand-desc {
-    font-size: 1.4rem;
-    color: var(--text-muted);
-    line-height: 1.7;
-    margin-bottom: 24px;
-    max-width: 320px;
-  }
-  
-  /* Link Lists */
-  .footer-links-list {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-  .footer-links-list a {
-    font-size: 1.4rem;
-    color: var(--text-muted);
-    transition: var(--transition-fast);
-  }
-  .footer-links-list a:hover {
-    color: var(--text-primary);
-    padding-left: 4px;
-  }
-
-  /* Social Icons and glow animation effects */
-  .footer-social-icons {
-    gap: 16px;
-  }
-  .social-icon-link {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 44px;
-    height: 44px;
-    background-color: var(--surface-primary);
-    border: 1px solid var(--border-color);
-    border-radius: var(--border-radius);
-    color: var(--text-secondary);
-    transition: var(--transition-smooth);
-  }
-  .instagram-glow:hover {
-    color: #E1306C;
-    border-color: #E1306C;
-    box-shadow: 0 0 15px rgba(225, 48, 108, 0.3);
-  }
-  .whatsapp-glow:hover {
-    color: #25D366;
-    border-color: #25D366;
-    box-shadow: 0 0 15px rgba(37, 211, 102, 0.3);
-  }
-  .mail-glow:hover {
-    color: var(--highlight-color);
-    border-color: var(--highlight-color);
-    box-shadow: 0 0 15px rgba(255, 59, 48, 0.3);
-  }
-
-  /* Footer Bottom segment */
-  .footer-bottom {
-    padding: 30px 0;
-    border-top: 1px solid var(--border-color);
-    font-size: 1.3rem;
-    color: var(--text-muted);
-  }
-  
-  @media screen and (min-width: 768px) {
-    .footer-top {
-      grid-template-columns: 2fr 1fr 1fr;
-    }
-  }
-  
-  @media screen parks and (min-width: 990px) {
-    .footer-top {
-      grid-template-columns: 2fr 1fr 1fr 1fr 1.5fr;
-    }
-  }
-</style>
 
 {% schema %}
 {
@@ -196,7 +70,7 @@
       "type": "textarea",
       "id": "brand_description",
       "label": "Brand Description",
-      "default": "Escape the ordinary. Premium streetwear designed for the bold Gen-Z minds. Handcrafted in India."
+      "default": "Premium urban streetwear engineered for those who refuse to fit in. Designed in India, inspired by global street culture."
     }
   ]
 }

@@ -1,115 +1,55 @@
 {% comment %}
-   Escape Clothing - Newsletter Signup Section
+   Escape Clothing - Newsletter Section (Redesigned with Tailwind CSS)
 {% endcomment %}
 
-<section class="newsletter-section reveal" id="Newsletter-{{ section.id }}">
-  <div class="container flex flex-column align-center text-center">
-    
-    <div class="newsletter-content">
-      <h2 class="newsletter-heading">{{ section.settings.heading | default: "GET EARLY ACCESS TO DROPS" }}</h2>
-      <p class="newsletter-subtext">{{ section.settings.subtext | default: "Join 5,000+ streetwear fans. No spam." }}</p>
-    </div>
+<section class="py-24 bg-surface border-t border-outline-variant" id="Newsletter-{{ section.id }}">
+  <div class="px-margin-mobile md:px-margin-desktop max-w-2xl mx-auto text-center">
+    <h2 class="font-headline-lg text-headline-lg text-primary uppercase mb-4">
+      {{ section.settings.heading | default: "GET EARLY ACCESS TO DROPS" }}
+    </h2>
+    <p class="font-body-md text-outline mb-10">
+      {{ section.settings.subtext | default: "Sign up to our newsletter and be the first to know about new arrivals and exclusive limited-time discounts." }}
+    </p>
 
-    <div class="newsletter-form-wrap">
-      {%- form 'customer', class: 'newsletter-form flex flex-column' -%}
-        <input type="hidden" name="contact[tags]" value="newsletter">
+    {%- form 'customer', class: 'flex flex-col gap-4' -%}
+      <input type="hidden" name="contact[tags]" value="newsletter">
+      
+      {%- if form.posted_successfully? -%}
+        <div class="bg-primary/10 border border-primary/30 p-4 text-primary font-label-lg uppercase">
+          {{ section.settings.success_message | default: "Welcome to the Crew! Standby for early drops." }}
+        </div>
+      {%- else -%}
+        <div class="flex flex-col md:flex-row gap-4">
+          <input 
+            type="email" 
+            name="contact[email]" 
+            id="NewsletterEmail-{{ section.id }}" 
+            class="flex-1 bg-surface-accent border border-outline-variant p-4 text-primary font-label-lg focus:border-primary focus:ring-0 rounded-none transition-colors" 
+            value="{{ form.email }}" 
+            placeholder="ENTER YOUR EMAIL" 
+            autocorrect="off" 
+            autocapitalize="off" 
+            required
+          >
+          <button 
+            type="submit" 
+            class="bg-primary text-on-primary px-10 py-4 font-label-lg text-label-lg uppercase tracking-widest hover:opacity-90 transition-all active:scale-95" 
+            name="commit" 
+            id="SubscribeBtn-{{ section.id }}"
+          >
+            JOIN
+          </button>
+        </div>
         
-        {%- if form.posted_successfully? -%}
-          <div class="newsletter-success-msg text-center">
-            <svg class="success-icon" viewBox="0 0 24 24" width="28" height="28" stroke="currentColor" stroke-width="2.5" fill="none"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-            <p>{{ section.settings.success_message | default: "Welcome to the Crew! Standby for early drops." }}</p>
-          </div>
-        {%- else -%}
-          <div class="flex input-group">
-            <input 
-              type="email" 
-              name="contact[email]" 
-              id="NewsletterEmail-{{ section.id }}" 
-              class="form-input newsletter-input" 
-              value="{{ form.email }}" 
-              placeholder="ENTER YOUR EMAIL" 
-              autocorrect="off" 
-              autocapitalize="off" 
-              required
-            >
-            <button type="submit" class="btn btn-primary newsletter-submit-btn btn-hover-slide" name="commit" id="SubscribeBtn-{{ section.id }}">
-              JOIN
-            </button>
-          </div>
-          
-          {%- if form.errors -%}
-            <p class="newsletter-error-msg text-center" style="margin-top: 12px; color: var(--highlight-color);">
-              {{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}
-            </p>
-          {%- endif -%}
+        {%- if form.errors -%}
+          <p class="text-sm mt-2 text-alert-drop">
+            {{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}
+          </p>
         {%- endif -%}
-        
-      {%- endform -%}
-    </div>
-
+      {%- endif -%}
+    {%- endform -%}
   </div>
 </section>
-
-<style>
-  .newsletter-section {
-    padding: 100px 0;
-    background-color: #0A0A0A;
-    border-bottom: 1px solid var(--border-color);
-  }
-  .newsletter-content {
-    max-width: 600px;
-    margin-bottom: 32px;
-  }
-  .newsletter-heading {
-    font-size: 4.2rem;
-    color: #FFFFFF;
-    margin-bottom: 12px;
-    letter-spacing: 2px;
-  }
-  .newsletter-subtext {
-    font-size: 1.6rem;
-    color: var(--text-muted);
-    letter-spacing: 1px;
-  }
-  
-  .newsletter-form-wrap {
-    width: 100%;
-    max-width: 500px;
-  }
-  
-  .input-group {
-    width: 100%;
-    border: 1px solid var(--border-color);
-    background-color: var(--surface-primary);
-  }
-  .newsletter-input {
-    background-color: transparent !important;
-    border: none !important;
-    font-size: 1.4rem;
-    letter-spacing: 1px;
-    padding: 18px 24px;
-  }
-  .newsletter-submit-btn {
-    border: none;
-    padding: 0 32px;
-    font-weight: 700;
-  }
-
-  /* Success Notification Styling */
-  .newsletter-success-msg {
-    background-color: rgba(46, 204, 113, 0.1);
-    border: 1px solid rgba(46, 204, 113, 0.3);
-    padding: 24px;
-    border-radius: var(--border-radius);
-    color: #2ECC71;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
-    font-size: 1.6rem;
-    font-weight: 600;
-  }
-</style>
 
 {% schema %}
 {
@@ -122,10 +62,10 @@
       "default": "GET EARLY ACCESS TO DROPS"
     },
     {
-      "type": "text",
+      "type": "textarea",
       "id": "subtext",
       "label": "Subtext Info",
-      "default": "Join 5,000+ streetwear fans. No spam."
+      "default": "Sign up to our newsletter and be the first to know about new arrivals and exclusive limited-time discounts."
     },
     {
       "type": "text",

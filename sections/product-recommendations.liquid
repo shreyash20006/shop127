@@ -3,16 +3,16 @@
    Uses Shopify Recommendations API to dynamically fetch similar products on load
 {% endcomment %}
 
-<section class="product-recommendations reveal" 
+<section class="product-recommendations py-24 bg-surface-elevated reveal" 
          id="ProductRecommendations-{{ section.id }}" 
-         data-url="{{ routes.product_recommendations_url }}?section_id={{ section_id }}&product_id={{ product.id }}&limit=4">
+         data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit=4">
   
   {%- if recommendations.performed and recommendations.products_count > 0 -%}
-    <div class="container">
-      <div class="section-header">
-        <h2 class="section-title has-line">{{ section.settings.title | default: "YOU MAY ALSO LIKE" }}</h2>
+    <div class="px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+      <div class="mb-12">
+        <h2 class="font-headline-lg text-headline-lg uppercase text-primary">{{ section.settings.title | default: "YOU MAY ALSO LIKE" }}</h2>
       </div>
-      <div class="products-grid-container grid">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-gutter">
         {%- for product in recommendations.products -%}
           {% render 'product-card', product: product %}
         {%- endfor -%}
@@ -24,7 +24,6 @@
 
 <style>
   .product-recommendations {
-    padding: 60px 0 100px 0;
     background-color: var(--bg-color);
   }
 </style>

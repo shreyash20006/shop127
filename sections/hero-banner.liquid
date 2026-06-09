@@ -1,130 +1,59 @@
 {% comment %}
-   Escape Clothing - Hero Banner Section
+   Escape Clothing - Hero Banner Section (Redesigned with Tailwind CSS)
 {% endcomment %}
 
-<section class="hero-banner" id="HeroBanner-{{ section.id }}" style="height: {{ section.settings.height_desktop }}vh;">
+<section class="relative h-screen w-full flex items-center justify-center overflow-hidden" id="HeroBanner-{{ section.id }}">
+  <div class="absolute inset-0 bg-black/40 z-10"></div>
   
-  {% comment %} Hero Background {% endcomment %}
-  <div class="hero-banner__bg parallax-element" style="{% if section.settings.image != blank %}background-image: url('{{ section.settings.image | image_url: width: 2000 }}');{% else %}background-image: url('https://images.unsplash.com/photo-1509281373149-e957c6296406?q=80&w=2000&auto=format&fit=crop');{% endif %}">
-    {%- if section.settings.video_url != blank -%}
-      <video autoplay muted loop playsinline class="hero-banner__video">
-        <source src="{{ section.settings.video_url }}" type="video/mp4">
-      </video>
+  {% comment %} Hero Background Image {% endcomment %}
+  {%- if section.settings.image != blank -%}
+    <img src="{{ section.settings.image | image_url: width: 2000 }}" 
+         alt="{{ section.settings.heading }}" 
+         class="absolute inset-0 w-full h-full object-cover">
+  {%- else -%}
+    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuD8R5LYV1JGkwb0p2Ps0GNmnPatXJ46b5XNJUuqkO4rNiLHXeo7lSVBHrMQvCOksNjLzQif0AJOntAsNieezNo5Ltn--3JYFUUVUBGHJ1-UBB1Zzh6ih-ffObJO2vv4JQ36S4iAuiqsU4ulpeu6EWJXfQdzetEmlx0FGyIDPVde-n9RqMAtIK2kJ9BmtgANgzxsVjYtdtrRVf3InpjsPN2kerIRUtnDUGhJ2Qp5hLQ-KxHQkNsK71Oda0vNg4QDootU4nW1Egxvqb4" 
+         alt="Hero Background" 
+         class="absolute inset-0 w-full h-full object-cover"
+         data-alt="A cinematic wide shot of a dark, urban streetwear environment featuring a high-contrast aesthetic.">
+  {%- endif -%}
+
+  {% comment %} Hero Video URL (if configured) {% endcomment %}
+  {%- if section.settings.video_url != blank -%}
+    <video autoplay muted loop playsinline class="absolute inset-0 w-full h-full object-cover z-0">
+      <source src="{{ section.settings.video_url }}" type="video/mp4">
+    </video>
+  {%- endif -%}
+
+  <div class="relative z-20 text-center px-4 max-w-4xl">
+    <span class="inline-block font-label-lg text-label-lg tracking-widest text-alert-drop mb-4 uppercase">
+      {{ section.settings.tagline | default: "NEW COLLECTION" }}
+    </span>
+    <h1 class="font-display-lg text-7xl md:text-9xl text-primary uppercase leading-none mb-8 tracking-tighter">
+      {{ section.settings.heading | default: "ESCAPE THE ORDINARY" }}
+    </h1>
+    
+    {%- if section.settings.subheading != blank -%}
+      <p class="font-body-lg text-lg md:text-2xl text-on-secondary-container mb-8 max-w-2xl mx-auto">
+        {{ section.settings.subheading }}
+      </p>
     {%- endif -%}
-  </div>
 
-  {% comment %} Dark Overlay {% endcomment %}
-  <div class="hero-banner__overlay" style="background-color: rgba(0, 0, 0, {{ section.settings.overlay_opacity | divided_by: 100.0 }});"></div>
-
-  {% comment %} Hero Content Centered {% endcomment %}
-  <div class="hero-banner__content container flex align-center justify-center text-center">
-    <div class="hero-banner__text-wrap reveal-stagger active">
-      
-      <p class="hero-tagline uppercase delay-100" style="color: var(--highlight-color); letter-spacing: 6px; font-size: 1.4rem; font-weight: 700; margin-bottom: 16px;">
-        {{ section.settings.tagline | default: "NEW COLLECTION" }}
-      </p>
-
-      <h1 class="hero-heading uppercase delay-200" style="font-family: var(--font-heading); line-height: 0.95;">
-        {%- assign heading_words = section.settings.heading | default: "ESCAPE THE ORDINARY" | split: " " -%}
-        {%- for word in heading_words -%}
-          <span class="word-reveal-container">
-            <span class="word-reveal-span" style="transition-delay: {{ forloop.index | times: 60 }}ms;">{{ word }}&nbsp;</span>
-          </span>
-        {%- endfor -%}
-      </h1>
-
-      <p class="hero-subheading delay-300" style="font-size: 1.8rem; color: var(--text-secondary); margin-top: 24px; margin-bottom: 40px; font-weight: 300;">
-        {{ section.settings.subheading | default: "Premium Streetwear. Made for the Bold." }}
-      </p>
-
-      <div class="hero-buttons flex justify-center delay-400" style="gap: 16px;">
-        <a href="{{ section.settings.btn_1_link | default: '/collections/all' }}" class="btn btn-primary btn-hover-slide">{{ section.settings.btn_1_text | default: "SHOP NOW" }}</a>
-        <a href="{{ section.settings.btn_2_link | default: '/collections/new-arrivals' }}" class="btn btn-secondary btn-hover-slide">{{ section.settings.btn_2_text | default: "NEW ARRIVALS" }}</a>
-      </div>
-
+    <div class="flex flex-col md:flex-row gap-4 justify-center">
+      <a href="{{ section.settings.btn_1_link | default: '/collections/all' }}" 
+         class="bg-primary text-on-primary px-10 py-4 font-label-lg text-label-lg uppercase tracking-wider hover:opacity-90 transition-all active:scale-95 rounded-sm inline-block">
+        {{ section.settings.btn_1_text | default: "SHOP NOW" }}
+      </a>
+      <a href="{{ section.settings.btn_2_link | default: '/collections/new-arrivals' }}" 
+         class="bg-transparent border border-primary text-primary px-10 py-4 font-label-lg text-label-lg uppercase tracking-wider hover:bg-primary/10 transition-all active:scale-95 rounded-sm inline-block">
+        {{ section.settings.btn_2_text | default: "NEW ARRIVALS" }}
+      </a>
     </div>
   </div>
 
-  {% comment %} Scroll Indicator Arrow {% endcomment %}
-  <div class="hero-scroll-indicator">
-    <svg class="scroll-arrow" viewBox="0 0 24 24" width="28" height="28" stroke="currentColor" stroke-width="2" fill="none"><line x1="12" y1="5" x2="12" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline></svg>
+  <div class="absolute bottom-10 left-1/2 -translate-x-1/2 z-20 animate-bounce">
+    <span class="material-symbols-outlined text-primary text-3xl">expand_more</span>
   </div>
 </section>
-
-<style>
-  .hero-banner {
-    position: relative;
-    width: 100%;
-    overflow: hidden;
-    margin-top: calc(-1 * var(--header-height) - 32px); /* overlap header */
-  }
-  .hero-banner__bg {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-size: cover;
-    background-position: center;
-    /* CSS performant parallax hook: uses the --scroll CSS variable updated in theme.js */
-    transform: translateY(calc(var(--scroll, 0) * 0.4px));
-    transition: transform 0.1s ease-out;
-  }
-  .hero-banner__video {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transform: translate(-50%, -50%);
-  }
-  .hero-banner__overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 1;
-  }
-  .hero-banner__content {
-    position: relative;
-    z-index: 2;
-    height: 100%;
-    padding-top: 100px; /* offset for header */
-  }
-  .hero-heading {
-    font-size: 5.6rem;
-    color: #FFFFFF;
-    word-break: break-word;
-  }
-  
-  .hero-scroll-indicator {
-    position: absolute;
-    bottom: 30px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 3;
-    animation: bounce 2s infinite;
-  }
-  
-  @keyframes bounce {
-    0%, 20%, 50%, 80%, 100% { transform: translate(-50%, 0); }
-    40% { transform: translate(-50%, -10px); }
-    60% { transform: translate(-50%, -5px); }
-  }
-
-  @media screen and (min-width: 768px) {
-    .hero-heading {
-      font-size: 9.6rem;
-    }
-  }
-
-  /* Trigger the word reveal slide ups when section loads */
-  .hero-banner__text-wrap.active .word-reveal-span {
-    transform: translateY(0);
-  }
-</style>
 
 {% schema %}
 {
@@ -138,28 +67,7 @@
     {
       "type": "text",
       "id": "video_url",
-      "label": "Hero Video MP4 Direct Link (Optional)",
-      "info": "Upload to Shopify Files and paste URL here"
-    },
-    {
-      "type": "range",
-      "id": "overlay_opacity",
-      "min": 0,
-      "max": 90,
-      "step": 5,
-      "unit": "%",
-      "label": "Overlay Darkness",
-      "default": 55
-    },
-    {
-      "type": "range",
-      "id": "height_desktop",
-      "min": 60,
-      "max": 100,
-      "step": 5,
-      "unit": "vh",
-      "label": "Section Height",
-      "default": 100
+      "label": "Hero Video MP4 Direct Link (Optional)"
     },
     {
       "type": "text",
@@ -176,8 +84,7 @@
     {
       "type": "text",
       "id": "subheading",
-      "label": "Subheading Text",
-      "default": "Premium Streetwear. Made for the Bold."
+      "label": "Subheading Text"
     },
     {
       "type": "text",

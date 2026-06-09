@@ -1,0 +1,155 @@
+{% comment %}
+   Escape Clothing - Customer Order Details Page (OS 2.0)
+{% endcomment %}
+
+<section class="py-24 bg-surface text-primary" id="CustomerOrder-{{ section.id }}">
+  <div class="px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+    
+    <!-- Header / Back link -->
+    <div class="border-b border-outline-variant pb-8 mb-12">
+      <a href="{{ routes.account_url }}" class="text-xs font-label-lg text-outline hover:text-primary transition-colors uppercase tracking-widest flex items-center gap-2 mb-4">
+        <span class="material-symbols-outlined text-[14px]">arrow_back</span> Back to Account
+      </a>
+      <h1 class="font-display-lg text-5xl md:text-7xl uppercase tracking-tighter">ORDER {{ order.name }}</h1>
+      <p class="font-label-lg text-label-lg text-outline mt-2">
+        PLACED ON {{ order.created_at | date: "%B %d, %Y %I:%M %p" }}
+      </p>
+    </div>
+
+    {%- if order.cancelled -%}
+      <div class="bg-alert-drop/10 border border-alert-drop/30 text-alert-drop p-6 mb-8 uppercase font-semibold text-sm tracking-wider">
+        <p>ORDER WAS CANCELLED ON {{ order.cancelled_at | date: "%B %d, %Y" }}</p>
+        <p class="text-xs opacity-80 mt-1">Reason: {{ order.cancel_reason_label }}</p>
+      </div>
+    {%- endif -%}
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+      
+      <!-- Order Items Detail Table -->
+      <div class="lg:col-span-2">
+        <h2 class="font-display-lg text-3xl uppercase tracking-widest mb-6">ITEMS</h2>
+        
+        <div class="space-y-6">
+          {%- for line_item in order.line_items -%}
+            <div class="flex gap-6 border-b border-outline-variant/40 pb-6 items-center">
+              <!-- Item Image -->
+              <div class="w-20 aspect-3-4 bg-surface-accent border border-outline-variant/40 flex-shrink-0 overflow-hidden">
+                {%- if line_item.image != blank -%}
+                  <img src="{{ line_item.image | image_url: width: 160 }}" alt="{{ line_item.title | escape }}" class="w-full h-full object-cover" loading="lazy">
+                {%- else -%}
+                  <div class="w-full h-full bg-surface-container"></div>
+                {%- endif -%}
+              </div>
+
+              <!-- Item Info -->
+              <div class="flex-grow min-w-0">
+                <h3 class="font-title-lg text-lg text-primary uppercase truncate">{{ line_item.product.title }}</h3>
+                <p class="font-body-md text-xs text-outline mt-1 uppercase">{{ line_item.variant.title }}</p>
+                <p class="font-body-md text-sm text-outline mt-2">Quantity: {{ line_item.quantity }}</p>
+              </div>
+
+              <!-- Item Price -->
+              <div class="text-right flex-shrink-0 font-semibold font-price-display text-primary">
+                {%- if line_item.original_price != line_item.final_price -%}
+                  <p class="line-through text-xs text-outline">₹{{ line_item.original_price | money_without_currency | replace: ',', '' }}</p>
+                  <p class="text-alert-drop">₹{{ line_item.final_price | money_without_currency | replace: ',', '' }}</p>
+                {%- else -%}
+                  <p>₹{{ line_item.final_price | money_without_currency | replace: ',', '' }}</p>
+                {%- endif -%}
+              </div>
+            </div>
+          {%- endfor -%}
+        </div>
+
+        <!-- Order Summary Totals -->
+        <div class="mt-8 border-t border-outline-variant pt-6 max-w-md ml-auto space-y-4 font-body-md text-sm text-outline">
+          <div class="flex justify-between">
+            <span>Subtotal</span>
+            <span class="text-primary font-semibold">₹{{ order.line_items_subtotal_price | money_without_currency | replace: ',', '' }}</span>
+          </div>
+
+          {%- for discount_application in order.cart_level_discount_applications -%}
+            <div class="flex justify-between text-alert-drop">
+              <span>Discount ({{ discount_application.title }})</span>
+              <span>-{{ discount_application.total_allocated_amount | money }}</span>
+            </div>
+          {%- endfor -%}
+
+          {%- for shipping_method in order.shipping_methods -%}
+            <div class="flex justify-between">
+              <span>Shipping ({{ shipping_method.title }})</span>
+              <span class="text-primary font-semibold">{{ shipping_method.price | money }}</span>
+            </div>
+          {%- endfor -%}
+
+          {%- for tax_line in order.tax_lines -%}
+            <div class="flex justify-between">
+              <span>Taxes ({{ tax_line.title }} {{ tax_line.rate_percentage }}%)</span>
+              <span class="text-primary font-semibold">{{ tax_line.price | money }}</span>
+            </div>
+          {%- endfor -%}
+
+          <div class="flex justify-between text-lg text-primary font-bold font-price-display border-t border-outline-variant/60 pt-4">
+            <span>TOTAL</span>
+            <span>₹{{ order.total_price | money_without_currency | replace: ',', '' }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Shipping / Billing Addresses -->
+      <div class="space-y-8">
+        <div>
+          <h2 class="font-display-lg text-3xl uppercase tracking-widest mb-6">SHIPPING</h2>
+          <div class="bg-surface-accent border border-outline-variant p-8 font-body-md text-sm text-outline">
+            <p class="text-primary font-semibold uppercase text-xs tracking-wider mb-4">DELIVERY ADDRESS</p>
+            {%- if order.shipping_address -%}
+              <div class="space-y-1">
+                <p class="text-primary font-medium">{{ order.shipping_address.name }}</p>
+                <p>{{ order.shipping_address.address1 }}</p>
+                {%- if order.shipping_address.address2 != blank -%}
+                  <p>{{ order.shipping_address.address2 }}</p>
+                {%- endif -%}
+                <p>{{ order.shipping_address.city }}, {{ order.shipping_address.province_code }} {{ order.shipping_address.zip }}</p>
+                <p>{{ order.shipping_address.country }}</p>
+                {%- if order.shipping_address.phone != blank -%}
+                  <p class="mt-2 text-primary">{{ order.shipping_address.phone }}</p>
+                {%- endif -%}
+              </div>
+            {%- else -%}
+              <p>No shipping address provided.</p>
+            {%- endif -%}
+          </div>
+        </div>
+
+        <div>
+          <h2 class="font-display-lg text-3xl uppercase tracking-widest mb-6">BILLING</h2>
+          <div class="bg-surface-accent border border-outline-variant p-8 font-body-md text-sm text-outline">
+            <p class="text-primary font-semibold uppercase text-xs tracking-wider mb-4">BILLING ADDRESS</p>
+            {%- if order.billing_address -%}
+              <div class="space-y-1">
+                <p class="text-primary font-medium">{{ order.billing_address.name }}</p>
+                <p>{{ order.billing_address.address1 }}</p>
+                {%- if order.billing_address.address2 != blank -%}
+                  <p>{{ order.billing_address.address2 }}</p>
+                {%- endif -%}
+                <p>{{ order.billing_address.city }}, {{ order.billing_address.province_code }} {{ order.billing_address.zip }}</p>
+                <p>{{ order.billing_address.country }}</p>
+              </div>
+            {%- else -%}
+              <p>No billing address provided.</p>
+            {%- endif -%}
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Customer Order Details",
+  "settings": []
+}
+{% endschema %}

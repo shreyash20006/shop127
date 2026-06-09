@@ -1,196 +1,50 @@
 {% comment %}
-   Escape Clothing - 999 Drop Banner Section with Countdown
+   Escape Clothing - 999 Drop Banner Section (Redesigned with Tailwind CSS)
 {% endcomment %}
 
-<section class="combo-drop-banner reveal" id="ComboDrop-{{ section.id }}">
-  <div class="container combo-drop-inner flex align-center justify-between">
+<section class="py-24 bg-[#111111] relative overflow-hidden" id="ComboDrop-{{ section.id }}">
+  <div class="absolute inset-0 opacity-10 pointer-events-none" style="background-image: url('https://www.transparenttextures.com/patterns/carbon-fibre.png')"></div>
+  <div class="px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto relative z-10 text-center">
+    <h2 class="font-display-lg text-7xl md:text-display-lg text-primary uppercase tracking-tighter mb-4">
+      {{ section.settings.title | default: "3 FOR ₹999" }}
+    </h2>
+    <p class="font-label-lg text-label-lg text-alert-drop mb-12 tracking-widest uppercase">
+      {{ section.settings.subtext | default: "LIMITED TIME DROP — ENDING SOON" }}
+    </p>
     
-    <div class="combo-drop__content">
-      <p class="combo-drop__badge uppercase">LIMITED TIME DROP</p>
-      <h2 class="combo-drop__title">{{ section.settings.title | default: "3 FOR ₹999" }}</h2>
-      <p class="combo-drop__subtext">{{ section.settings.subtext | default: "Limited drops. Don't miss out." }}</p>
-      
-      {% comment %} Urgency Notification {% endcomment %}
-      <div class="combo-drop__urgency flex align-center">
-        <span class="pulse-dot"></span>
-        <span class="urgency-text">Only <strong id="UrgencyStockCount">{{ section.settings.stock_count | default: 14 }}</strong> items remaining in this drop!</span>
-      </div>
-
-      <div style="margin-top: 32px;">
-        <a href="{{ section.settings.button_link | default: '/collections/999-drop' }}" class="btn btn-primary btn-hover-slide">{{ section.settings.button_text | default: "SHOP THE DROP" }}</a>
-      </div>
-    </div>
-
     {% comment %} Countdown Timer {% endcomment %}
-    <div class="combo-drop__timer">
-      <p class="timer-label">DROP ENDS IN</p>
-      <div class="countdown-boxes-container flex" data-end-date="{{ section.settings.end_date | default: '2026-12-31T23:59:59' }}">
-        
-        <div class="timer-box">
-          <span class="timer-num" id="TimerDays-{{ section.id }}">00</span>
-          <span class="timer-unit">Days</span>
-        </div>
-        <div class="timer-divider">:</div>
-        
-        <div class="timer-box">
-          <span class="timer-num" id="TimerHours-{{ section.id }}">00</span>
-          <span class="timer-unit">Hrs</span>
-        </div>
-        <div class="timer-divider">:</div>
-        
-        <div class="timer-box">
-          <span class="timer-num" id="TimerMinutes-{{ section.id }}">00</span>
-          <span class="timer-unit">Mins</span>
-        </div>
-        <div class="timer-divider">:</div>
-        
-        <div class="timer-box">
-          <span class="timer-num" id="TimerSeconds-{{ section.id }}">00</span>
-          <span class="timer-unit">Secs</span>
-        </div>
+    <div class="flex justify-center gap-4 md:gap-8 mb-12" data-end-date="{{ section.settings.end_date | default: '2026-12-31T23:59:59' }}">
+      <div class="bg-surface-accent border border-outline-variant w-20 h-24 md:w-28 md:h-32 flex flex-col items-center justify-center">
+        <span class="font-headline-lg text-headline-lg text-primary" id="TimerDays-{{ section.id }}">00</span>
+        <span class="font-label-lg text-[10px] text-outline uppercase">Days</span>
+      </div>
+      <div class="bg-surface-accent border border-outline-variant w-20 h-24 md:w-28 md:h-32 flex flex-col items-center justify-center">
+        <span class="font-headline-lg text-headline-lg text-primary" id="TimerHours-{{ section.id }}">00</span>
+        <span class="font-label-lg text-[10px] text-outline uppercase">Hours</span>
+      </div>
+      <div class="bg-surface-accent border border-outline-variant w-20 h-24 md:w-28 md:h-32 flex flex-col items-center justify-center">
+        <span class="font-headline-lg text-headline-lg text-primary" id="TimerMinutes-{{ section.id }}">00</span>
+        <span class="font-label-lg text-[10px] text-outline uppercase">Mins</span>
+      </div>
+      <div class="bg-surface-accent border border-outline-variant w-20 h-24 md:w-28 md:h-32 flex flex-col items-center justify-center">
+        <span class="font-headline-lg text-headline-lg text-primary" id="TimerSeconds-{{ section.id }}">00</span>
+        <span class="font-label-lg text-[10px] text-outline uppercase">Secs</span>
       </div>
     </div>
-
+    
+    <a href="{{ section.settings.button_link | default: '/collections/999-drop' }}" 
+       class="bg-alert-drop text-white px-12 py-5 font-label-lg text-label-lg uppercase tracking-widest hover:scale-105 transition-all active:scale-95 shadow-[0_0_20px_rgba(255,59,48,0.3)] inline-block">
+      {{ section.settings.button_text | default: "SHOP THE DROP" }}
+    </a>
   </div>
 </section>
 
-<style>
-  .combo-drop-banner {
-    padding: 80px 0;
-    background: linear-gradient(135deg, #1c0a0a 0%, #0c0000 50%, #000000 100%);
-    border-top: 1px solid var(--border-color);
-    border-bottom: 1px solid var(--border-color);
-    position: relative;
-  }
-  .combo-drop-banner::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: radial-gradient(rgba(255, 59, 48, 0.08) 1px, transparent 0);
-    background-size: 24px 24px;
-    z-index: 0;
-    pointer-events: none;
-  }
-  .combo-drop-inner {
-    flex-direction: column;
-    gap: 48px;
-    position: relative;
-    z-index: 1;
-  }
-  .combo-drop__content {
-    max-width: 580px;
-    text-align: center;
-  }
-  .combo-drop__badge {
-    font-size: 1.2rem;
-    font-weight: 700;
-    color: var(--highlight-color);
-    letter-spacing: 3px;
-    margin-bottom: 12px;
-  }
-  .combo-drop__title {
-    font-size: 6.4rem;
-    margin-bottom: 16px;
-    color: #FFFFFF;
-  }
-  .combo-drop__subtext {
-    font-size: 1.8rem;
-    color: var(--text-secondary);
-    margin-bottom: 24px;
-  }
-  
-  /* Urgency dot */
-  .combo-drop__urgency {
-    display: inline-flex;
-    background-color: rgba(255, 59, 48, 0.1);
-    border: 1px solid rgba(255, 59, 48, 0.3);
-    padding: 8px 16px;
-    border-radius: var(--border-radius);
-  }
-  .pulse-dot {
-    width: 8px;
-    height: 8px;
-    background-color: var(--highlight-color);
-    border-radius: 50%;
-    margin-right: 12px;
-    animation: urgency-pulse 1.5s infinite;
-  }
-  .urgency-text {
-    font-size: 1.4rem;
-    color: var(--text-secondary);
-  }
-  
-  @keyframes urgency-pulse {
-    0% { box-shadow: 0 0 0 0 rgba(255, 59, 48, 0.7); }
-    70% { box-shadow: 0 0 0 8px rgba(255, 59, 48, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(255, 59, 48, 0); }
-  }
-
-  /* Timer Display */
-  .combo-drop__timer {
-    text-align: center;
-  }
-  .timer-label {
-    font-size: 1.3rem;
-    font-weight: 700;
-    letter-spacing: 2px;
-    color: var(--text-muted);
-    margin-bottom: 16px;
-  }
-  .timer-box {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 70px;
-  }
-  .timer-num {
-    font-family: var(--font-heading);
-    font-size: 4.8rem;
-    color: #FFFFFF;
-    line-height: 1;
-  }
-  .timer-unit {
-    font-size: 1.1rem;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    margin-top: 4px;
-    letter-spacing: 1px;
-  }
-  .timer-divider {
-    font-size: 3.6rem;
-    font-weight: 300;
-    color: var(--border-color);
-    margin: 0 8px;
-    line-height: 1;
-  }
-
-  @media screen and (min-width: 990px) {
-    .combo-drop-inner {
-      flex-direction: row;
-      text-align: left;
-    }
-    .combo-drop__content {
-      text-align: left;
-    }
-    .timer-box {
-      width: 90px;
-    }
-    .timer-num {
-      font-size: 7.2rem;
-    }
-    .timer-divider {
-      font-size: 5.6rem;
-      margin: 0 16px;
-    }
-  }
-</style>
-
 <script>
   document.addEventListener('DOMContentLoaded', () => {
-    const timerContainer = document.querySelector('#ComboDrop-{{ section.id }} .countdown-boxes-container');
+    const parent = document.getElementById('ComboDrop-{{ section.id }}');
+    if (!parent) return;
+
+    const timerContainer = parent.querySelector('[data-end-date]');
     if (!timerContainer) return;
 
     const endDateStr = timerContainer.getAttribute('data-end-date');
@@ -226,18 +80,6 @@
 
     updateTimer();
     setInterval(updateTimer, 1000);
-
-    // Mock stock counts decrementing slowly
-    const stockEl = document.getElementById('UrgencyStockCount');
-    if (stockEl) {
-      let currentStock = parseInt(stockEl.innerText);
-      setInterval(() => {
-        if (currentStock > 3 && Math.random() > 0.7) {
-          currentStock--;
-          stockEl.innerText = currentStock;
-        }
-      }, 25000); // decrement stock count occasionally
-    }
   });
 </script>
 
@@ -255,16 +97,7 @@
       "type": "text",
       "id": "subtext",
       "label": "Subheading Text",
-      "default": "Limited drops. Don't miss out."
-    },
-    {
-      "type": "range",
-      "id": "stock_count",
-      "min": 5,
-      "max": 50,
-      "step": 1,
-      "label": "Remaining Stock Counter",
-      "default": 14
+      "default": "LIMITED TIME DROP — ENDING SOON"
     },
     {
       "type": "text",

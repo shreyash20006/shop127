@@ -164,6 +164,14 @@
                   {% unless product.available %}disabled{% endunless %}>
             BUY NOW
           </button>
+
+          <a href="https://wa.me/918261094774?text=Hi!%20I%20want%20to%20order%20the%20{{ product.title | url_encode }}%20from%20Escape%20Clothing."
+             target="_blank"
+             class="btn whatsapp-order-btn flex align-center justify-center gap-3 btn-hover-slide"
+             style="background-color: #25D366; color: #FFFFFF; font-weight: 700; border: none; padding: 15px 0; text-decoration: none; font-size: 1.4rem; letter-spacing: 1.5px; border-radius: var(--border-radius);">
+            <svg viewBox="0 0 24 24" style="width: 20px; height: 20px; fill: currentColor;"><path d="M12.012 2c-5.506 0-9.989 4.478-9.99 9.984a9.96 9.96 0 0 0 1.335 4.975L2 22l5.197-1.362a9.926 9.926 0 0 0 4.814 1.248h.005c5.505 0 9.99-4.478 9.99-9.986 0-2.67-1.037-5.178-2.924-7.065A9.923 9.923 0 0 0 12.012 2zm5.727 14.047c-.244.688-1.22 1.26-1.68 1.32-.419.055-.956.088-2.969-.748-2.574-1.062-4.225-3.69-4.354-3.86-.127-.17-1.047-1.393-1.047-2.656 0-1.263.662-1.884.897-2.119.236-.235.514-.294.685-.294.17 0 .341.002.49.009.155.007.363-.059.568.44.21.512.72 1.76.782 1.884.062.126.104.272.02.44-.082.17-.123.272-.246.419-.123.147-.258.328-.369.44-.123.126-.252.264-.108.512.144.248.641 1.06 1.378 1.719.95.848 1.748 1.11 1.996 1.235.248.126.393.104.538-.063.146-.17.62-.72.786-.96.166-.24.33-.2.553-.118.224.082 1.417.67 1.666.793.248.123.414.185.476.294.062.11.062.637-.182 1.325z"/></svg>
+            ORDER ON WHATSAPP
+          </a>
         </div>
 
       {%- endform -%}

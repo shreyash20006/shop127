@@ -1,56 +1,16 @@
 {% comment %}
-   Escape Clothing - Announcement Bar Section
+   Escape Clothing - Announcement Bar Section (Redesigned with Tailwind CSS)
 {% endcomment %}
 
-<div class="announcement-bar" id="AnnouncementBar-{{ section.id }}" style="background-color: {{ section.settings.bg_color }}; color: {{ section.settings.text_color }};">
-  <div class="container">
-    <div class="announcement-bar__slider">
-      {%- for block in section.blocks -%}
-        <div class="announcement-bar__message {% if forloop.first %}active{% endif %}" {{ block.shopify_attributes }}>
-          <span>{{ block.settings.text }}</span>
-        </div>
-      {%- endfor -%}
-    </div>
+<div class="announcement-bar bg-alert-drop text-white py-2 text-center font-label-lg text-[11px] tracking-widest uppercase relative z-50 overflow-hidden h-9 flex items-center justify-center" id="AnnouncementBar-{{ section.id }}">
+  <div class="max-w-container-max mx-auto px-4 w-full h-full relative">
+    {%- for block in section.blocks -%}
+      <div class="announcement-bar__message absolute inset-0 opacity-0 flex items-center justify-center transition-all duration-500 {% if forloop.first %}active opacity-100 translate-y-0{% else %}translate-y-4{% endif %}" {{ block.shopify_attributes }}>
+        <span>{{ block.settings.text }}</span>
+      </div>
+    {%- endfor -%}
   </div>
 </div>
-
-<style>
-  .announcement-bar {
-    padding: 8px 0;
-    text-align: center;
-    font-size: 1.1rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    position: relative;
-    z-index: 1000;
-    overflow: hidden;
-    height: 32px;
-  }
-  .announcement-bar__slider {
-    position: relative;
-    width: 100%;
-    height: 100%;
-  }
-  .announcement-bar__message {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    opacity: 0;
-    transform: translateY(15px);
-    transition: opacity 0.5s ease, transform 0.5s ease;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-  }
-  .announcement-bar__message.active {
-    opacity: 1;
-    transform: translateY(0);
-    position: relative;
-  }
-</style>
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
@@ -61,9 +21,11 @@
     const intervalTime = {{ section.settings.interval | default: 4 }} * 1000;
 
     setInterval(() => {
-      messages[currentIndex].classList.remove('active');
+      messages[currentIndex].classList.remove('active', 'opacity-100', 'translate-y-0');
+      messages[currentIndex].classList.add('opacity-0', 'translate-y-4');
       currentIndex = (currentIndex + 1) % messages.length;
-      messages[currentIndex].classList.add('active');
+      messages[currentIndex].classList.remove('opacity-0', 'translate-y-4');
+      messages[currentIndex].classList.add('active', 'opacity-100', 'translate-y-0');
     }, intervalTime);
   });
 </script>
